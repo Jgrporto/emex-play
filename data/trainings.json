@@ -1,0 +1,30 @@
+{
+  "categories": [
+    {
+      "slug": "lideranca-e-gestao",
+      "title": "Para Futuros Líderes",
+      "trainings": [
+        { "id": 1, "title": "Liderança de Alta Performance", "thumbnailUrl": "/thumbnails/lider-1.jpeg" },
+        { "id": 2, "title": "Comunicação Não-Violenta", "thumbnailUrl": "/thumbnails/lider-2.jpg" },
+        { "id": 3, "title": "Gestão de Equipes Remotas", "thumbnailUrl": "/thumbnails/lider-3.jpg" },
+        { "id": 4, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" },
+        { "id": 5, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" },
+        { "id": 6, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" },
+        { "id": 7, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" },
+        { "id": 8, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" }
+      ]
+    },
+    {
+      "slug": "desenvolvimento-pessoal",
+      "title": "Desenvolvimento Pessoal",
+      "trainings": [
+        { "id": 9, "title": "Inteligência Emocional", "thumbnailUrl": "/thumbnails/dev-1.jpg" },
+        { "id": 10, "title": "Produtividade e Foco", "thumbnailUrl": "/thumbnails/dev-2.jpg" },
+        { "id": 11, "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg" },
+        { "id": 12, "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg" },
+        { "id": 13, "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg" },
+        { "id": 14, "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg" }
+      ]
+    }
+  ]
+}
