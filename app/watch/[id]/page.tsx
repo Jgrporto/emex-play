@@ -28,10 +28,11 @@ export default function WatchPage() {
 
   // IDs de vídeo do YouTube (MVP: um mapa manual para o seu vídeo)
   // Futuramente, esta informação viria do seu JSON ou de uma API
-  const youtubeVideoMap: { [key: string]: string } = {
-    '1': '4QRPT8qozx4' // O ID do seu vídeo do YouTube para o treinamento com ID '1'
-    // Adicione mais IDs de treinamento aqui conforme necessário
-  };
+const youtubeVideoMap: { [key: string]: string } = {
+  'apresentacao': 'ID_DO_SEU_VIDEO_DE_APRESENTACAO', // <-- ADICIONE ESTA LINHA
+  '1': '4QRPT8qozx4' 
+  // Adicione mais IDs de treinamento aqui conforme necessário
+};
 
   const youtubeVideoId = youtubeVideoMap[training.id];
 

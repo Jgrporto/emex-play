@@ -5,15 +5,15 @@ import TrainingCard from './TrainingCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 type Training = {
-  id: string; // <-- A correção é aqui
+  id: string; 
   title: string;
   thumbnailUrl: string;
 };
-
 type TrainingCarouselProps = {
   title: string;
   trainings: Training[];
 };
+
 
 export default function TrainingCarousel({ title, trainings }: TrainingCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -35,7 +35,6 @@ export default function TrainingCarousel({ title, trainings }: TrainingCarouselP
 
   return (
     <div className="mb-8">
-      {/* Header do Carrossel com Título e Link */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-emex-azul-claro">{title}</h2>
         <a href="#" className="text-sm font-semibold text-gray-400 hover:text-white transition-colors">
@@ -43,21 +42,18 @@ export default function TrainingCarousel({ title, trainings }: TrainingCarouselP
         </a>
       </div>
 
-      {/* NOVO CONTAINER: Agora este div 'relative' envolve TUDO (setas e carrossel) */}
-      <div className="relative group"> 
-        {/* Seta da Esquerda (agora mais à esquerda) */}
+      {/* MUDANÇA 1: Nomeamos o grupo do carrossel */}
+      <div className="relative group/carousel"> 
+        
+        {/* MUDANÇA 2: A seta da esquerda agora responde ao grupo nomeado */}
         <button 
           onClick={() => handleScroll('left')}
-          // Alteramos a posição para -left-12 (era -left-4) para afastar da borda
-          // E adicionamos 'block' para que o botão ocupe sua própria linha, facilitando o posicionamento
-          className="absolute top-1/2 -left-12 -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black hidden md:block"
+          className="absolute top-1/2 -left-12 -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-black hidden md:block"
           aria-label="Rolar para a esquerda"
         >
           <ChevronLeft size={28} />
         </button>
 
-        {/* O Carrossel de Cards (o que de fato rola) */}
-        {/* Adicionamos padding horizontal para que os cards não encostem nas setas ou bordas */}
         <div 
           ref={scrollRef}
           className="flex overflow-x-auto space-x-4 pb-4 px-4 scrollbar-hide"
@@ -67,17 +63,15 @@ export default function TrainingCarousel({ title, trainings }: TrainingCarouselP
           ))}
         </div>
 
-        {/* Seta da Direita (agora mais à direita) */}
+        {/* MUDANÇA 3: A seta da direita também responde ao grupo nomeado */}
         <button 
           onClick={() => handleScroll('right')}
-          // Alteramos a posição para -right-12 (era -right-4)
-          // E adicionamos 'block'
-          className="absolute top-1/2 -right-12 -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black hidden md:block"
+          className="absolute top-1/2 -right-12 -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-black hidden md:block"
           aria-label="Rolar para a direita"
         >
           <ChevronRight size={28} />
         </button>
-      </div> {/* Fim do NOVO CONTAINER relativo */}
+      </div>
     </div>
   );
 }

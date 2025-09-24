@@ -36,3 +36,12 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #777; /* Cor da barra ao passar o mouse */
 }
+
+
+.bg-secao-apresentacao {
+  background-color: #141414; /* DE: cinza escuro PARA: preto absoluto */
+}
+
+.bg-secao-conteudo {
+  background-color: #181818; /* DE: cinza claro PARA: cinza escuro */
+}

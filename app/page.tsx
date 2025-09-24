@@ -5,27 +5,37 @@ import Footer from '@/components/Footer';
 import data from '@/data/trainings.json';
 
 export default function HomePage() {
-  const { categories } = data;
-  const featuredTraining = categories[0]?.trainings[0];
+  // Lógica de dados CORRETA: buscando o featuredTraining e as categories
+  const { featuredTraining, categories } = data;
 
   return (
-    // DEPOIS: Adicionamos um padding no topo (pt-24) para criar o espaço abaixo da Navbar.
-    <div className="pt-24">
+    <div>
       <Navbar />
       
-      {featuredTraining && <HeroBanner featuredTraining={featuredTraining} />}
+      <main className="pt-24">
+        
+        {/* --- SEÇÃO 1: APRESENTAÇÃO --- */}
+        {/* Estrutura visual CORRETA com a nossa classe manual */}
+        <section className="bg-secao-apresentacao">
+          {featuredTraining && <HeroBanner featuredTraining={featuredTraining} />}
+        </section>
 
-      {/* Removemos a margem negativa (-mt-20) que não é mais necessária */}
-      <main className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-        {categories.map((category) => (
-          <TrainingCarousel
-            key={category.slug}
-            title={category.title}
-            trainings={category.trainings}
-          />
-        ))}
+        {/* --- SEÇÃO 2: CONTEÚDO (CARROSSÉIS) --- */}
+        {/* Estrutura visual CORRETA com a nossa classe manual */}
+        <section className="bg-secao-conteudo py-8">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+            {categories.map((category) => (
+              <TrainingCarousel
+                key={category.slug}
+                title={category.title}
+                trainings={category.trainings}
+              />
+            ))}
+          </div>
+          <Footer />
+        </section>
+        
       </main>
-      <Footer />
     </div>
   );
 }
