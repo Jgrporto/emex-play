@@ -5,7 +5,7 @@ import TrainingCard from './TrainingCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 type Training = {
-  id: number;
+  id: string; // <-- A correção é aqui
   title: string;
   thumbnailUrl: string;
 };

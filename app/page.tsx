@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import HeroBanner from '@/components/HeroBanner';
 import TrainingCarousel from '@/components/TrainingCarousel';
+import Footer from '@/components/Footer';
 import data from '@/data/trainings.json';
 
 export default function HomePage() {
@@ -24,6 +25,7 @@ export default function HomePage() {
           />
         ))}
       </main>
+      <Footer />
     </div>
   );
 }

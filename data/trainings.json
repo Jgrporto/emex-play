@@ -4,26 +4,25 @@
       "slug": "lideranca-e-gestao",
       "title": "Para Futuros Líderes",
       "trainings": [
-        { "id": 1, "title": "Liderança de Alta Performance", "thumbnailUrl": "/thumbnails/lider-1.jpeg" },
-        { "id": 2, "title": "Comunicação Não-Violenta", "thumbnailUrl": "/thumbnails/lider-2.jpg" },
-        { "id": 3, "title": "Gestão de Equipes Remotas", "thumbnailUrl": "/thumbnails/lider-3.jpg" },
-        { "id": 4, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" },
-        { "id": 5, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" },
-        { "id": 6, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" },
-        { "id": 7, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" },
-        { "id": 8, "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg" }
+        { 
+          "id": "1", 
+          "title": "Liderança de Alta Performance", 
+          "thumbnailUrl": "/thumbnails/lider-1.jpeg",
+          "description": "Neste treinamento, aprenda as chaves para se tornar um líder que inspira e alcança resultados extraordinários. Foco em comunicação, motivação e gestão de equipes de alta performance."
+        },
+        { "id": "2", "title": "Comunicação Não-Violenta", "thumbnailUrl": "/thumbnails/lider-2.jpg", "description": "Desenvolva habilidades para uma comunicação mais eficaz e empática, resolvendo conflitos de forma construtiva." },
+        { "id": "3", "title": "Gestão de Equipes Remotas", "thumbnailUrl": "/thumbnails/lider-3.jpg", "description": "Descubra as melhores práticas para gerenciar equipes distribuídas, garantindo produtividade e engajamento." },
+        { "id": "4", "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg", "description": "Domine a arte de dar e receber feedback, transformando-o em uma ferramenta poderosa de desenvolvimento." }
       ]
     },
     {
       "slug": "desenvolvimento-pessoal",
       "title": "Desenvolvimento Pessoal",
       "trainings": [
-        { "id": 9, "title": "Inteligência Emocional", "thumbnailUrl": "/thumbnails/dev-1.jpg" },
-        { "id": 10, "title": "Produtividade e Foco", "thumbnailUrl": "/thumbnails/dev-2.jpg" },
-        { "id": 11, "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg" },
-        { "id": 12, "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg" },
-        { "id": 13, "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg" },
-        { "id": 14, "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg" }
+        { "id": "5", "title": "Inteligência Emocional", "thumbnailUrl": "/thumbnails/dev-1.jpg", "description": "Aprenda a reconhecer e gerenciar suas emoções para tomar decisões mais assertivas e construir relacionamentos saudáveis." },
+        { "id": "6", "title": "Produtividade e Foco", "thumbnailUrl": "/thumbnails/dev-2.jpg", "description": "Técnicas e estratégias para maximizar sua produtividade e manter o foco em suas tarefas mais importantes." },
+        { "id": "7", "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg", "description": "Melhore suas habilidades de falar em público, criando apresentações impactantes e comunicando suas ideias com clareza e confiança." },
+        { "id": "8", "title": "Excel Avançado", "thumbnailUrl": "/thumbnails/excel-avancado.jpg", "description": "Domine as funcionalidades avançadas do Excel para análises de dados complexas, automação de tarefas e criação de dashboards dinâmicos." }
       ]
     }
   ]
