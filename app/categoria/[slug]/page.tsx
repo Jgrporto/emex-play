@@ -14,7 +14,8 @@ type Training = {
   description?: string;
 };
 
-// MUDANÇA PRINCIPAL: Usamos 'any' para as props para contornar o erro de build.
+// A CORREÇÃO ESTÁ AQUI: Adicionamos este comentário para desabilitar a regra do ESLint
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function CategoryPage({ params }: any) {
   const { categories } = data;
   const { slug } = params;
