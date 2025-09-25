@@ -49,17 +49,7 @@ export default function Navbar() {
               Treinamentos
             </Link>
 
-            {/* Link para Minha Lista (já preparado) */}
-            <Link
-              href="/minha-lista"
-              className={`text-lg pb-1 transition-colors duration-200 ${
-                pathname === '/minha-lista'
-                  ? 'font-semibold text-white border-b-2 border-emex-azul-claro' // ESTADO ATIVO (com azul)
-                  : 'text-gray-400 hover:text-white border-b-2 border-transparent' // ESTADO INATIVO
-              }`}
-            >
-              Minha Lista
-            </Link>
+            
           </nav>
         </div>
 
