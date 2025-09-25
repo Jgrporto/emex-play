@@ -4,26 +4,24 @@ import { useState, useEffect, useCallback } from 'react';
 
 const LOCAL_STORAGE_KEY = 'emexPlayMyList';
 
-// Função para ler do localStorage de forma segura
-const getStoredList = (): string[] => {
-  // GARANTIA: Só executa se estiver no navegador
-  if (typeof window === 'undefined') {
-    return [];
-  }
-  try {
-    const item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
-    return item ? JSON.parse(item) : [];
-  } catch (error) {
-    console.error("Error reading from localStorage", error);
-    return [];
-  }
-};
-
 export const useMyList = () => {
-  // O estado agora é inicializado de forma segura com a função acima
-  const [myList, setMyList] = useState<string[]>(getStoredList);
+  // 1. O estado SEMPRE inicia vazio no servidor.
+  const [myList, setMyList] = useState<string[]>([]);
 
-  // Efeito para salvar no localStorage sempre que 'myList' mudar
+  // 2. Este useEffect SÓ roda no NAVEGADOR, após a página carregar.
+  // É aqui que carregamos os dados salvos de forma segura.
+  useEffect(() => {
+    try {
+      const storedList = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (storedList) {
+        setMyList(JSON.parse(storedList));
+      }
+    } catch (error) {
+      console.error("Error reading from localStorage", error);
+    }
+  }, []); // O array vazio [] garante que isso rode só uma vez no cliente.
+
+  // 3. Este useEffect salva a lista sempre que ela muda, também só no navegador.
   useEffect(() => {
     try {
       window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(myList));
@@ -35,10 +33,8 @@ export const useMyList = () => {
   const toggleMyList = useCallback((trainingId: string) => {
     setMyList((prevList) => {
       if (prevList.includes(trainingId)) {
-        // Remove da lista
         return prevList.filter((id) => id !== trainingId);
       } else {
-        // Adiciona na lista
         return [...prevList, trainingId];
       }
     });
@@ -48,6 +44,5 @@ export const useMyList = () => {
     return myList.includes(trainingId);
   }, [myList]);
 
-  // Retornamos as novas ferramentas
   return { myList, toggleMyList, isInMyList };
 };
