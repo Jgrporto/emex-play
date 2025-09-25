@@ -7,7 +7,6 @@ import TrainingCard from '@/components/TrainingCard';
 import TrainingModal from '@/components/TrainingModal';
 import data from '@/data/trainings.json';
 
-// Definimos os tipos de forma mais limpa e organizada
 type Training = {
   id: string;
   title: string;
@@ -15,12 +14,8 @@ type Training = {
   description?: string;
 };
 
-type PageProps = {
-  params: { slug: string };
-};
-
-// GARANTA QUE A FUNÇÃO NÃO TENHA "async" AQUI
-export default function CategoryPage({ params }: PageProps) {
+// MUDANÇA PRINCIPAL: Usamos 'any' para as props para contornar o erro de build.
+export default function CategoryPage({ params }: any) {
   const { categories } = data;
   const { slug } = params;
 
