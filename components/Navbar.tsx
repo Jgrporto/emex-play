@@ -1,34 +1,68 @@
-// A diretiva "use client" e os imports de 'useState' e 'useEffect' foram removidos.
+"use client";
+
 import { Search, Bell, UserCircle } from 'lucide-react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Navbar() {
-  // A lógica de 'useState' e 'useEffect' foi completamente removida daqui.
+  const pathname = usePathname();
 
   return (
-    // A classe do header agora é fixa, sem a lógica de mudança de cor.
-    <header className="fixed top-0 left-0 right-0 z-20 p-4 flex items-center bg-gradient-to-b from-black to-transparent transition-colors duration-300 h-24">
+    <header className="w-full p-4 flex items-center bg-gradient-to-b from-black via-black/80 to-transparent h-24">
       
       <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
         
-        {/* ZONA ESQUERDA: Logo e Navegação Principal */}
         <div className="flex items-center space-x-8">
-          <Image
-            src="/emex-logo.png"
-            alt="EMEX Play Logo"
-            width={150}
-            height={50}
-            priority
-            className="cursor-pointer"
-          />
+          <Link href="/" passHref>
+            <Image
+              src="/emex-logo.png"
+              alt="EMEX Play Logo"
+              width={150}
+              height={50}
+              priority
+              className="cursor-pointer"
+            />
+          </Link>
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="hover:text-gray-300 text-lg">Início</a>
-            <a href="#" className="font-semibold text-white text-lg border-b-2 border-emex-azul-claro pb-1">Treinamentos</a>
-            <a href="#" className="hover:text-gray-300 text-lg">Minha Lista</a>
+            {/* Link para Início */}
+            <Link
+              href="/"
+              className={`text-lg pb-1 transition-colors duration-200 ${
+                pathname === '/'
+                  ? 'font-semibold text-white border-b-2 border-emex-azul-claro' // ESTADO ATIVO (com azul)
+                  : 'text-gray-400 hover:text-white border-b-2 border-transparent' // ESTADO INATIVO
+              }`}
+            >
+              Início
+            </Link>
+
+            {/* Link para Treinamentos */}
+            <Link
+              href="/treinamentos"
+              className={`text-lg pb-1 transition-colors duration-200 ${
+                pathname === '/treinamentos'
+                  ? 'font-semibold text-white border-b-2 border-emex-azul-claro' // ESTADO ATIVO (com azul)
+                  : 'text-gray-400 hover:text-white border-b-2 border-transparent' // ESTADO INATIVO
+              }`}
+            >
+              Treinamentos
+            </Link>
+
+            {/* Link para Minha Lista (já preparado) */}
+            <Link
+              href="/minha-lista"
+              className={`text-lg pb-1 transition-colors duration-200 ${
+                pathname === '/minha-lista'
+                  ? 'font-semibold text-white border-b-2 border-emex-azul-claro' // ESTADO ATIVO (com azul)
+                  : 'text-gray-400 hover:text-white border-b-2 border-transparent' // ESTADO INATIVO
+              }`}
+            >
+              Minha Lista
+            </Link>
           </nav>
         </div>
 
-        {/* ZONA DIREITA: Ícones */}
         <div className="flex items-center space-x-6">
           <Search className="h-7 w-7 cursor-pointer hover:text-gray-300" />
           <Bell className="h-7 w-7 cursor-pointer hover:text-gray-300" />

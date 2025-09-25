@@ -8,28 +8,63 @@
   },
   "categories": [
     {
-      "slug": "lideranca-e-gestao",
-      "title": "Para Futuros Líderes",
+      "slug": "ferramentas-e-plataformas",
+      "title": "Ferramentas e Plataformas",
       "trainings": [
         { 
           "id": "1", 
-          "title": "Liderança de Alta Performance", 
-          "thumbnailUrl": "/thumbnails/lider-1.jpeg",
-          "description": "Neste treinamento, aprenda as chaves para se tornar um líder que inspira e alcança resultados extraordinários."
+          "title": "Conhecendo o Flashman",
+          "thumbnailUrl": "/thumbnails/flashman.png",
+          "description": "Descubra tudo sobre a ferramenta Flashman e como ela pode otimizar seus processos."
         },
-        { "id": "2", "title": "Comunicação Não-Violenta", "thumbnailUrl": "/thumbnails/lider-2.jpg", "description": "Desenvolva habilidades para uma comunicação mais eficaz e empática." },
-        { "id": "3", "title": "Gestão de Equipes Remotas", "thumbnailUrl": "/thumbnails/lider-3.jpg", "description": "Descubra as melhores práticas para gerenciar equipes distribuídas." },
-        { "id": "4", "title": "Feedback Construtivo", "thumbnailUrl": "/thumbnails/lider-4.jpg", "description": "Domine a arte de dar e receber feedback." }
+        { 
+          "id": "12", 
+          "title": "Treinamento em Construção", 
+          "thumbnailUrl": "/thumbnails/placeholder.jpg", 
+          "description": "Um novo conteúdo está sendo preparado para esta área."
+        },
+        { 
+          "id": "13", 
+          "title": "Treinamento em Construção", 
+          "thumbnailUrl": "/thumbnails/placeholder.jpg", 
+          "description": "Um novo conteúdo está sendo preparado para esta área."
+        }
       ]
     },
     {
-      "slug": "desenvolvimento-pessoal",
-      "title": "Desenvolvimento Pessoal",
+      "slug": "nocoes-de-atendimento",
+      "title": "Noções de Atendimento",
       "trainings": [
-        { "id": "5", "title": "Inteligência Emocional", "thumbnailUrl": "/thumbnails/dev-1.jpg", "description": "Aprenda a reconhecer e gerenciar suas emoções." },
-        { "id": "6", "title": "Produtividade e Foco", "thumbnailUrl": "/thumbnails/dev-2.jpg", "description": "Técnicas e estratégias para maximizar sua produtividade." },
-        { "id": "7", "title": "Oratória e Apresentações", "thumbnailUrl": "/thumbnails/dev-3.jpg", "description": "Melhore suas habilidades de falar em público." },
-        { "id": "8", "title": "Excel Avançado", "thumbnailUrl": "/thumbnails/excel-avancado.jpg", "description": "Domine as funcionalidades avançadas do Excel." }
+        { 
+          "id": "5", 
+          "title": "Atendimento Humanizado", 
+          "thumbnailUrl": "/thumbnails/Atendimento.jpg", 
+          "description": "Um novo conteúdo está sendo preparado para esta área." 
+        },
+        { 
+          "id": "6", 
+          "title": "Treinamento em Construção", 
+          "thumbnailUrl": "/thumbnails/placeholder.jpg", 
+          "description": "Um novo conteúdo está sendo preparado para esta área." 
+        }
+      ]
+    },
+    {
+      "slug": "nocoes-de-suporte-tecnico",
+      "title": "Noções de Suporte Técnico",
+      "trainings": [
+        { 
+          "id": "9", 
+          "title": "Diagnóstico de Problemas", 
+          "thumbnailUrl": "/thumbnails/Suporte.jpg", 
+          "description": "Um novo conteúdo está sendo preparado para esta área." 
+        },
+        { 
+          "id": "10", 
+          "title": "Treinamento em Construção", 
+          "thumbnailUrl": "/thumbnails/placeholder.jpg", 
+          "description": "Um novo conteúdo está sendo preparado para esta área." 
+        }
       ]
     }
   ]

@@ -1,47 +1,59 @@
+/* Diretiva Correta para Tailwind v4 */
 @import 'tailwindcss';
 
+/* Estilização base da página */
 body {
   background-color: #141414;
   color: #ffffff;
-  
+}
+
+/* Esconde a barra de rolagem para elementos com esta classe */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
 
-
-}
-
 /* Estilização customizada da scrollbar para o site todo */
-
-/* Para navegadores baseados em Webkit (Chrome, Safari, Edge, etc.) */
 ::-webkit-scrollbar {
-  width: 10px; /* Largura da barra de rolagem */
+  width: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #1f1f1f; /* Cor da trilha (um pouco mais clara que o fundo) */
+  background: #1f1f1f;
 }
-
 ::-webkit-scrollbar-thumb {
-  background-color: #555; /* Cor da barra que se move */
-  border-radius: 20px; /* Bordas arredondadas */
-  border: 3px solid #1f1f1f; /* Cria um efeito de "borda" ao redor da barra */
+  background-color: #555;
+  border-radius: 20px;
+  border: 3px solid #1f1f1f;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #777; /* Cor da barra ao passar o mouse */
+  background-color: #777;
 }
 
-
+/* Nossas classes manuais para cores de fundo */
 .bg-secao-apresentacao {
-  background-color: #141414; /* DE: cinza escuro PARA: preto absoluto */
+  background-color: #141414;
+}
+.bg-secao-conteudo {
+  background-color: #181717;
+}
+.bg-modal-conteudo {
+  background-color: #1F1F1F;
 }
 
-.bg-secao-conteudo {
-  background-color: #181818; /* DE: cinza claro PARA: cinza escuro */
+/* Classe manual para a borda azul da Navbar */
+.border-emex-azul-claro {
+  border-color: #00A3E0;
 }
+
+/* Classes manuais para hovers de ícones */
+.icon-hover-container-verde:hover svg {
+  color: #20B042; /* emex-verde */
+}
+.icon-hover-container-laranja:hover svg {
+  color: #F57F17; /* emex-laranja */
+}
+
+/* Animação de transição de página (Fade In) */
