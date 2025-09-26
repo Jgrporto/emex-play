@@ -22,7 +22,7 @@ async function getData(slug: string) {
 }
 
 // A página agora é um Componente de Servidor 'async'
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
+export default async function CategoryPage({ params }: any) {
   const category: Category = await getData(params.slug);
 
   if (!category) {
