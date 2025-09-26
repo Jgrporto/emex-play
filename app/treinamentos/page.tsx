@@ -5,7 +5,7 @@ import TrainingClient from './TrainingClient';
 import { client } from '@/lib/sanityClient';
 
 export default async function TrainingsPage() {
-  // Fetch inicial via Sanity Client (server-side)
+  // Fetch inicial apenas para SEO
   const query = `*[_type == "homepage" && _id == "homepage"][0]{
     "heroTrainings": *[_type == "training" && _id in ^.heroCarouselTrainingIds[]->._id]{_id, title, "thumbnailUrl": thumbnailUrl.asset->url, description, slug},
     "categories": *[_type == "category"] | order(title asc){_id, title, slug, "trainings": *[_type == "training" && references(^._id)]{_id, title, "thumbnailUrl": thumbnailUrl.asset->url, description, slug}}
@@ -16,7 +16,7 @@ export default async function TrainingsPage() {
   return (
     <div>
       <Navbar />
-      {/* Client Component que lida com useSearchParams */}
+      {/* Tudo relacionado a useSearchParams vai aqui, isolado no client */}
       <TrainingClient initialData={data} />
       <Footer />
     </div>
