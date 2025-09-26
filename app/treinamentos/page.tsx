@@ -17,7 +17,7 @@ export default function TrainingsPage() {
   const [data, setData] = useState<PageData | null>(null);
   const [selectedTraining, setSelectedTraining] = useState<Training | null>(null);
 
-  // Busca os dados do Sanity apenas no client
+  // Fetch dos dados apenas no client
   useEffect(() => {
     const query = `*[_type == "homepage" && _id == "homepage"][0]{
       "heroTrainings": *[_type == "training" && _id in ^.heroCarouselTrainingIds[]->._id]{_id, title, "thumbnailUrl": thumbnailUrl.asset->url, description, slug},
@@ -48,7 +48,11 @@ export default function TrainingsPage() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <Navbar />
       <main>
-        {!searchQuery && <section className="bg-emex-preto"><HeroCarousel trainings={data.heroTrainings} /></section>}
+        {!searchQuery && (
+          <section className="bg-emex-preto">
+            <HeroCarousel trainings={data.heroTrainings} />
+          </section>
+        )}
 
         <section className="bg-secao-conteudo py-8">
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
@@ -65,8 +69,11 @@ export default function TrainingsPage() {
             ) : (
               <div className="text-center text-gray-400 py-16">
                 <h2 className="text-4xl font-bold text-white mb-2">Ops!</h2>
-                <p className="text-lg mb-8">Não encontramos nada em nossa plataforma que corresponda à sua pesquisa.</p>
-                <Link href="/" className="bg-emex-azul-claro text-white font-bold px-6 py-3 rounded hover:brightness-110 transition-all duration-300">
+                <p className="text-lg mb-8">Não encontramos nada que corresponda à sua pesquisa.</p>
+                <Link
+                  href="/"
+                  className="bg-emex-azul-claro text-white font-bold px-6 py-3 rounded hover:brightness-110 transition-all duration-300"
+                >
                   Voltar para a página inicial
                 </Link>
               </div>
@@ -75,7 +82,10 @@ export default function TrainingsPage() {
           <Footer />
         </section>
       </main>
-      {selectedTraining && <TrainingModal training={selectedTraining} onClose={() => setSelectedTraining(null)} />}
+
+      {selectedTraining && (
+        <TrainingModal training={selectedTraining} onClose={() => setSelectedTraining(null)} />
+      )}
     </motion.div>
   );
 }
