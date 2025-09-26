@@ -1,13 +1,13 @@
-"use client"; // Necessário para a interatividade do botão "Voltar ao Topo"
+"use client";
 
 import { useState, useEffect } from 'react';
 import { Youtube, Facebook, Instagram, ArrowUp } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Função para rolar a página suavemente para o topo
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -15,31 +15,34 @@ export default function Footer() {
     });
   };
 
-  // Efeito para mostrar/esconder o botão baseado na posição do scroll
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) { // O botão aparece após rolar 300px
+      if (window.scrollY > 300) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
       }
     };
-
     window.addEventListener('scroll', toggleVisibility);
-
-    // Limpa o "ouvinte" de scroll quando o componente é desmontado
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
   return (
     <footer className="bg-emex-preto border-t border-gray-800 py-12 text-gray-400 relative">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Layout em Grid com 4 colunas em telas grandes, e 1 em telas pequenas */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-
+        {/* A CORREÇÃO ESTÁ AQUI: adicionamos 'items-start' */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
+          
           {/* Coluna 1: Logo e Copyright */}
           <div className="space-y-4">
-            <Link href="/" className="text-2xl font-bold text-white">EMEX Play</Link>
+            <Link href="/">
+                <Image
+                    src="/footer-logo.png"
+                    alt="EMEX Play Logo"
+                    width={150} // Mantendo o tamanho maior que você pediu
+                    height={50}
+                />
+            </Link>
             <p className="text-sm">&copy; {new Date().getFullYear()} João Gabriel Rodrigues Porto.<br/>Todos os direitos reservados.</p>
           </div>
 
@@ -49,6 +52,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="/" className="hover:text-white transition-colors">Início</Link></li>
               <li><Link href="/treinamentos" className="hover:text-white transition-colors">Treinamentos</Link></li>
+              <li><Link href="/minha-lista" className="hover:text-white transition-colors">Minha Lista</Link></li>
             </ul>
           </div>
 
