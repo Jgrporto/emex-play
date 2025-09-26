@@ -4,14 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import type { Training } from '@/types';
 
-type Training = {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  description?: string;
-};
-
+// Definimos as propriedades que o HeroCarousel espera receber
 type HeroCarouselProps = {
   trainings: Training[];
 };
@@ -33,12 +28,10 @@ export default function HeroCarousel({ trainings }: HeroCarouselProps) {
     });
   }, [trainings.length]);
 
-  // A LÓGICA DE CORREÇÃO ESTÁ AQUI
   useEffect(() => {
-    // O timer é limpo e recriado toda vez que o currentIndex muda
     const slideInterval = setInterval(nextSlide, 7000);
     return () => clearInterval(slideInterval);
-  }, [currentIndex, nextSlide]); // Adicionamos 'currentIndex' à lista de dependências
+  }, [currentIndex, nextSlide]);
 
 
   if (!trainings || trainings.length === 0) {
@@ -52,7 +45,7 @@ export default function HeroCarousel({ trainings }: HeroCarouselProps) {
       
       {trainings.map((training, index) => (
         <div
-          key={training.id}
+          key={training._id}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
@@ -69,13 +62,13 @@ export default function HeroCarousel({ trainings }: HeroCarouselProps) {
       
       <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 max-w-7xl w-full px-4 md:px-8 text-left">
           <div className="max-w-xl">
-            <h2 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg transition-all duration-500" key={currentTraining.id}>
+            <h2 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg transition-all duration-500" key={currentTraining._id}>
               {currentTraining.title}
             </h2>
             <p className="text-lg text-gray-200 mt-4 drop-shadow-lg max-w-lg">
               {currentTraining.description}
             </p>
-            <Link href={`/watch/${currentTraining.id}`} passHref>
+            <Link href={`/watch/${currentTraining._id}`} passHref>
               <button className="flex items-center mt-8 bg-emex-verde text-white font-bold px-6 py-3 rounded transition-all duration-300 cursor-pointer btn-hover-container">
                 <Play className="h-6 w-6 mr-2 text-white icon-hover-scale" />
                 Assistir Agora

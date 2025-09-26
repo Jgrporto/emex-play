@@ -1,64 +1,98 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { client } from '@/lib/sanityClient';
+import { motion } from 'framer-motion'; // 1. Importamos a motion
 import Navbar from '@/components/Navbar';
 import HeroCarousel from '@/components/HeroCarousel';
 import TrainingCarousel from '@/components/TrainingCarousel';
 import Footer from '@/components/Footer';
 import TrainingModal from '@/components/TrainingModal';
-import data from '@/data/trainings.json';
-
-type Training = {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  description?: string;
-  fullTitle?: string;
-};
+import Loading from '@/components/Loading'; // 2. Importamos nosso novo componente
+import type { PageData, Training } from '@/types';
+import Link from 'next/link';
 
 export default function TrainingsPage() {
-  // Removemos a lógica antiga e lemos apenas as categorias
-  const { categories } = data;
-
-  // NOVA LÓGICA: Pega o primeiro treinamento de cada categoria para o banner
-  const heroTrainings = categories.map(category => category.trainings[0]).filter(Boolean); // .filter(Boolean) remove qualquer item indefinido se uma categoria estiver vazia
-
+  const [data, setData] = useState<PageData | null>(null);
   const [selectedTraining, setSelectedTraining] = useState<Training | null>(null);
 
+  useEffect(() => {
+    const query = `*[_type == "homepage" && _id == "homepage"][0]{
+      "heroTrainings": *[_type == "training" && _id in ^.heroCarouselTrainingIds[]->._id]{_id, title, "thumbnailUrl": thumbnailUrl.asset->url, description, slug},
+      "categories": *[_type == "category"] | order(title asc){_id, title, slug, "trainings": *[_type == "training" && references(^._id)]{_id, title, "thumbnailUrl": thumbnailUrl.asset->url, description, slug}}
+    }`;
+    const fetchData = async () => {
+      const result = await client.fetch(query);
+      setData(result);
+    };
+    fetchData();
+  }, []);
+
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('q') || '';
+
+  const filteredCategories = useMemo(() => {
+    if (!data) return [];
+    if (!searchQuery) return data.categories;
+    return data.categories.map(category => ({
+      ...category,
+      trainings: category.trainings.filter(training =>
+        training.title.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    })).filter(category => category.trainings.length > 0);
+  }, [searchQuery, data]);
+
+  // 3. Se os dados não carregaram, mostra nosso novo componente Loading
+  if (!data) {
+    return <Loading />;
+  }
+
   return (
-    <div>
+    // 4. Envolvemos o conteúdo principal com <motion.div> para o efeito de fade-in
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <Navbar />
-
       <main>
-        {/* A Navbar agora é estática, então não precisamos mais do pt-24 */}
-        <section className="bg-emex-preto">
-          {/* O HeroCarousel agora recebe a lista dinâmica */}
-          <HeroCarousel trainings={heroTrainings} />
-        </section>
-
+        {!searchQuery && (
+          <section className="bg-emex-preto">
+            <HeroCarousel trainings={data.heroTrainings} />
+          </section>
+        )}
         <section className="bg-secao-conteudo py-8">
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-            {categories.map((category) => (
-              <TrainingCarousel
-                key={category.slug}
-                title={category.title}
-                slug={category.slug}
-                trainings={category.trainings}
-                onInfoClick={setSelectedTraining}
-              />
-            ))}
+            {filteredCategories.length > 0 ? (
+              filteredCategories.map((category) => (
+                <TrainingCarousel
+                  key={category._id}
+                  title={category.title}
+                  slug={category.slug.current}
+                  trainings={category.trainings}
+                  onInfoClick={setSelectedTraining}
+                />
+              ))
+            ) : (
+              <div className="text-center text-gray-400 py-16">
+                 <h2 className="text-4xl font-bold text-white mb-2">Ops!</h2>
+                 <p className="text-lg mb-8">Não encontramos nada em nossa plataforma que corresponda à sua pesquisa.</p>
+                 <Link href="/" className="bg-emex-azul-claro text-white font-bold px-6 py-3 rounded hover:brightness-110 transition-all duration-300">
+                   Voltar para a página inicial
+                 </Link>
+              </div>
+            )}
           </div>
           <Footer />
         </section>
-
       </main>
-
       {selectedTraining && (
         <TrainingModal 
           training={selectedTraining} 
           onClose={() => setSelectedTraining(null)}
         />
       )}
-    </div>
+    </motion.div>
   );
 }

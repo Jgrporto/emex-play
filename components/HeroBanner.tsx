@@ -1,27 +1,19 @@
 import { Play, Info } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Training } from '@/types'; // Importamos o tipo central
 
-// Definimos o tipo de dados que o componente espera receber
-type Training = {
-  id: string;
-  title: string;
-  fullTitle?: string; // Título opcional, mais completo para o banner
-  thumbnailUrl: string;
-  description?: string;
-};
+// A definição de tipo local foi removida.
 
-// Definimos as propriedades do componente HeroBanner
 type HeroBannerProps = {
   featuredTraining: Training;
-  onInfoClick: (training: Training) => void; // Função para abrir o modal
+  onInfoClick: (training: Training) => void;
 };
 
 export default function HeroBanner({ featuredTraining, onInfoClick }: HeroBannerProps) {
   return (
     <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8 px-4 py-12">
 
-      {/* Coluna da Esquerda: Imagem */}
       <div className="w-full md:w-1/2">
         <Image
           src={featuredTraining.thumbnailUrl} 
@@ -33,13 +25,12 @@ export default function HeroBanner({ featuredTraining, onInfoClick }: HeroBanner
         />
       </div>
 
-      {/* Coluna da Direita: Textos e Botões */}
       <div className="w-full md:w-1/2 flex flex-col items-start text-left">
         <span className="text-emex-verde font-bold text-sm mb-2">POR ONDE COMEÇAR</span>
 
         <h2 className="text-4xl lg:text-5xl font-bold">
-          {/* Usando o "fullTitle" para o banner, com destaque na primeira palavra */}
-          <span className="text-emex-laranja">BOAS-VINDAS</span> AO EMEX PLAY!
+          {/* Usamos o fullTitle se existir, senão o title normal */}
+          <span className="text-emex-laranja">{featuredTraining.fullTitle?.split(' ')[0] || ''}</span> {featuredTraining.fullTitle?.substring(featuredTraining.fullTitle?.indexOf(' ') + 1) || featuredTraining.title}
         </h2>
 
         <p className="mt-4 text-lg text-gray-300">
@@ -47,17 +38,15 @@ export default function HeroBanner({ featuredTraining, onInfoClick }: HeroBanner
         </p>
 
         <div className="flex items-center mt-8 space-x-4">
-           <Link href={`/watch/${featuredTraining.id}`} passHref>
-  <button className="flex items-center justify-center bg-emex-verde text-white font-bold px-6 py-3 rounded transition-all duration-300 cursor-pointer btn-hover-container">
-    <Play className="h-6 w-6 mr-2 text-white icon-hover-scale" />
-    Assistir
-  </button>
-</Link>
-          
-          {/* Botão que chama a função onInfoClick para abrir o modal */}
+          {/* O Link agora usa _id */}
+          <Link href={`/watch/${featuredTraining._id}`} passHref>
+            <button className="flex items-center justify-center bg-emex-verde text-white font-bold px-6 py-3 rounded transition-all duration-300 cursor-pointer btn-hover-container">
+              <Play className="h-6 w-6 mr-2 text-white icon-hover-scale" /> Assistir
+            </button>
+          </Link>
           <button 
             onClick={() => onInfoClick(featuredTraining)}
-            className="flex items-center justify-center bg-transparent border-2 border-gray-400 text-gray-300 font-bold px-6 py-3 rounded btn-vazado-hover transition-colors duration-200 cursor-pointer"
+            className="flex items-center justify-center bg-transparent border-2 border-gray-400 text-gray-300 font-bold px-6 py-3 rounded transition-all duration-300 cursor-pointer btn-vazado-hover"
           >
             <Info className="h-6 w-6 mr-2" /> Mais Informações
           </button>

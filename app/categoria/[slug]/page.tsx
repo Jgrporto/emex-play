@@ -1,27 +1,29 @@
-"use client";
-
-import { useState } from 'react';
+import { client } from '@/lib/sanityClient';
+import type { Category } from '@/types';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import TrainingCard from '@/components/TrainingCard';
-import TrainingModal from '@/components/TrainingModal';
-import data from '@/data/trainings.json';
+import CategoryList from './CategoryList';
 
-type Training = {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  description?: string;
-};
+// Função para buscar os dados da categoria específica no servidor
+async function getData(slug: string) {
+  const query = `*[_type == "category" && slug.current == $slug][0]{
+    title,
+    "trainings": *[_type == "training" && references(^._id)]{
+      _id,
+      title,
+      "thumbnailUrl": thumbnailUrl.asset->url,
+      description,
+      slug
+    }
+  }`;
 
-// A CORREÇÃO ESTÁ AQUI: Adicionamos este comentário para desabilitar a regra do ESLint
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function CategoryPage({ params }: any) {
-  const { categories } = data;
-  const { slug } = params;
+  const data = await client.fetch(query, { slug });
+  return data;
+}
 
-  const category = categories.find(cat => cat.slug === slug);
-  const [selectedTraining, setSelectedTraining] = useState<Training | null>(null);
+// A página agora é um Componente de Servidor 'async'
+export default async function CategoryPage({ params }: { params: { slug: string } }) {
+  const category: Category = await getData(params.slug);
 
   if (!category) {
     return (
@@ -38,23 +40,16 @@ export default function CategoryPage({ params }: any) {
   return (
     <div className="bg-secao-conteudo min-h-screen">
       <Navbar />
-      
-      <main className="pt-32 pb-12 animate-fade-in">
+
+      <main className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h1 className="text-4xl font-bold text-white mb-8">
             Categoria: <span className="text-emex-azul-claro">{category.title}</span>
           </h1>
-          
+
           {category.trainings.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {category.trainings.map(training => (
-                <TrainingCard 
-                  key={training.id}
-                  training={training}
-                  onInfoClick={setSelectedTraining}
-                />
-              ))}
-            </div>
+            // Passamos os treinamentos para o componente de cliente
+            <CategoryList trainings={category.trainings} />
           ) : (
             <p className="text-gray-400">Não há treinamentos nesta categoria no momento.</p>
           )}
@@ -62,13 +57,6 @@ export default function CategoryPage({ params }: any) {
       </main>
 
       <Footer />
-
-      {selectedTraining && (
-        <TrainingModal 
-          training={selectedTraining} 
-          onClose={() => setSelectedTraining(null)}
-        />
-      )}
     </div>
   );
 }

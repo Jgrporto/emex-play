@@ -4,13 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PlayCircle, ChevronDown } from 'lucide-react';
 import React from 'react';
-
-type Training = {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  description?: string;
-};
+import type { Training } from '@/types';
 
 type TrainingCardProps = {
   training: Training;
@@ -18,7 +12,8 @@ type TrainingCardProps = {
 };
 
 export default function TrainingCard({ training, onInfoClick }: TrainingCardProps) {
-
+  
+  // Função para lidar com o clique nos ícones que não devem navegar
   const handleIconClick = (e: React.MouseEvent, action: () => void) => {
     e.preventDefault();
     e.stopPropagation();
@@ -26,13 +21,14 @@ export default function TrainingCard({ training, onInfoClick }: TrainingCardProp
   };
 
   return (
+    // O clique no card todo abre o modal de informações
     <div 
       onClick={() => onInfoClick(training)}
       className="group relative flex-shrink-0 w-60 rounded-lg overflow-hidden
                  bg-emex-cinza-escuro shadow-lg
                  transform transition-all duration-300 ease-in-out
                  hover:scale-110 hover:z-20 hover:shadow-2xl cursor-pointer">
-
+      
       <div className="relative w-full aspect-video">
         <Image
           src={training.thumbnailUrl}
@@ -49,15 +45,19 @@ export default function TrainingCard({ training, onInfoClick }: TrainingCardProp
         <h3 className="text-white font-bold truncate mb-2">{training.title}</h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-
-              <Link href={`/watch/${training.id}`} passHref onClick={(e) => e.stopPropagation()}>
+            
+              {/* O ícone de Play é um link direto para a página de assistir */}
+              <Link href={`/watch/${training._id}`} passHref onClick={(e) => e.stopPropagation()}>
                 <div className="icon-hover-container-verde transition-colors duration-300">
                   <PlayCircle className="h-8 w-8 text-white" />
                 </div>
               </Link>
 
-          </div>
+              {/* O ícone de Adicionar à Lista foi removido */}
 
+          </div>
+          
+          {/* O ícone de detalhes continua abrindo o modal */}
           <button onClick={(e) => handleIconClick(e, () => onInfoClick(training))} className="focus:outline-none cursor-pointer">
             <ChevronDown className="h-8 w-8 text-white hover:text-emex-azul-claro transition-colors" />
           </button>
