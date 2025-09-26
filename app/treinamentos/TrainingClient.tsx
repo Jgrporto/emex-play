@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import HeroCarousel from '@/components/HeroCarousel';
 import TrainingCarousel from '@/components/TrainingCarousel';
 import TrainingModal from '@/components/TrainingModal';
-import Loading from '@/components/Loading';
 import type { PageData, Training } from '@/types';
 import Link from 'next/link';
 
@@ -33,8 +32,6 @@ export default function TrainingClient({ initialData }: Props) {
       }))
       .filter(category => category.trainings.length > 0);
   }, [searchQuery, data]);
-
-  if (!data) return <Loading />;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
