@@ -21,7 +21,7 @@ async function getData(slug: string) {
   return data;
 }
 
-// A página agora é um Componente de Servidor 'async'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function CategoryPage({ params }: any) {
   const category: Category = await getData(params.slug);
 
