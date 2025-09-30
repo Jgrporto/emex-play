@@ -4,6 +4,7 @@ import { X, PlayCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Training } from '@/types';
+import { Play } from 'lucide-react';
 
 type TrainingModalProps = {
   training: Training;
@@ -43,12 +44,11 @@ export default function TrainingModal({ training, onClose }: TrainingModalProps)
               {training.description || "Descrição não disponível."}
             </p>
             {/* MUDANÇA 2: O Link agora usa 'training._id' */}
-            <Link href={`/watch/${training._id}`} passHref>
-              <button className="flex items-center justify-center w-full bg-emex-verde text-white font-bold px-6 py-3 rounded transition-all duration-300 cursor-pointer btn-hover-container">
-                <PlayCircle className="h-6 w-6 mr-2 text-white icon-hover-scale" />
-                Iniciar Treinamento
-              </button>
-            </Link>
+             <Link href={`/watch/${training.slug}`} passHref>
+  <button className="flex items-center justify-center bg-white text-black ...">
+    <Play className="h-6 w-6 mr-2" /> Assistir
+  </button>
+</Link>
           </div>
         </div>
       </div>
