@@ -7,20 +7,15 @@ import Footer from '@/components/Footer';
 import WatchView from './WatchView';
 import type { Training, NextTraining } from '@/types';
 
-// 1. Definição explícita e correta para as props da página
-type Props = {
-  params: {
-    slug: string;
-  };
-};
+// O 'type Props' foi removido daqui.
 
 type QueryResult = {
   training: Training;
   categoryTrainings: NextTraining[];
 };
 
-// 2. A função agora usa o 'type Props' que definimos
-export default async function WatchPage({ params }: Props) {
+// A CORREÇÃO ESTÁ AQUI: definimos o tipo diretamente na função, o que é mais explícito e seguro.
+export default async function WatchPage({ params }: { params: { slug: string } }) {
   const query = `
     {
       "training": *[_type == "training" && slug.current == $slug][0]{
