@@ -39,11 +39,11 @@ export default function HeroBanner({ featuredTraining, onInfoClick }: HeroBanner
 
         <div className="flex items-center mt-8 space-x-4">
           {/* O Link agora usa _id */}
-          <Link href={`/watch/${featuredTraining._id}`} passHref>
-            <button className="flex items-center justify-center bg-emex-verde text-white font-bold px-6 py-3 rounded transition-all duration-300 cursor-pointer btn-hover-container">
-              <Play className="h-6 w-6 mr-2 text-white icon-hover-scale" /> Assistir
-            </button>
-          </Link>
+          <Link href={`/watch/${featuredTraining.slug}`} passHref>
+    <button className="flex items-center justify-center bg-white text-black ...">
+        <Play className="h-6 w-6 mr-2" /> Assistir
+    </button>
+</Link>
           <button 
             onClick={() => onInfoClick(featuredTraining)}
             className="flex items-center justify-center bg-transparent border-2 border-gray-400 text-gray-300 font-bold px-6 py-3 rounded transition-all duration-300 cursor-pointer btn-vazado-hover"

@@ -10,6 +10,18 @@ export default {
       title: 'Título do Treinamento',
       type: 'string',
     },
+    // --- CAMPO ADICIONADO E CORRIGIDO ---
+    {
+      name: 'slug',
+      title: 'Slug (URL Amigável)',
+      type: 'slug', // O tipo correto para habilitar o botão "Generate"
+      options: {
+        source: 'title', // Gera o slug a partir do campo 'title'
+        maxLength: 96,
+      },
+      description: 'Clique em "Generate" para criar a URL a partir do título.',
+    },
+    // --- FIM DA CORREÇÃO ---
     {
       name: 'description',
       title: 'Descrição',

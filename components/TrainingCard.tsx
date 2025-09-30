@@ -13,7 +13,12 @@ type TrainingCardProps = {
 
 export default function TrainingCard({ training, onInfoClick }: TrainingCardProps) {
   
-  // Função para lidar com o clique nos ícones que não devem navegar
+  // ADIÇÃO CRÍTICA: Trava de segurança
+  // Se o treinamento não tiver um slug, não renderizamos nada para evitar erros.
+  if (!training.slug) {
+    return null;
+  }
+
   const handleIconClick = (e: React.MouseEvent, action: () => void) => {
     e.preventDefault();
     e.stopPropagation();
@@ -40,20 +45,18 @@ export default function TrainingCard({ training, onInfoClick }: TrainingCardProp
       </div>
 
       <div className="absolute -bottom-full w-full p-3 bg-emex-cinza-escuro
-                    opacity-0 group-hover:opacity-100 group-hover:bottom-0
-                    transition-all duration-300 ease-in-out">
+                       opacity-0 group-hover:opacity-100 group-hover:bottom-0
+                       transition-all duration-300 ease-in-out">
         <h3 className="text-white font-bold truncate mb-2">{training.title}</h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             
-              {/* O ícone de Play é um link direto para a página de assistir */}
-              <Link href={`/watch/${training._id}`} passHref onClick={(e) => e.stopPropagation()}>
+              {/* Esta linha já estava correta, usando a string 'slug' diretamente */}
+              <Link href={`/watch/${training.slug}`} passHref onClick={(e) => e.stopPropagation()}>
                 <div className="icon-hover-container-verde transition-colors duration-300">
                   <PlayCircle className="h-8 w-8 text-white" />
                 </div>
               </Link>
-
-              {/* O ícone de Adicionar à Lista foi removido */}
 
           </div>
           

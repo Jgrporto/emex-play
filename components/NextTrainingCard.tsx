@@ -1,16 +1,19 @@
+
+
 import Image from 'next/image';
 import Link from 'next/link';
+import type { NextTraining } from '@/types'; 
 
-type Training = {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
+
+type NextTrainingCardProps = {
+  training: NextTraining;
 };
 
-export default function NextTrainingCard({ training }: { training: Training }) {
+export default function NextTrainingCard({ training }: NextTrainingCardProps) {
   return (
-    <Link href={`/watch/${training.id}`} className="flex items-center gap-4 group p-2 rounded-md hover:bg-emex-cinza-claro transition-colors">
-      <div className="relative w-32 h-20 flex-shrink-0 rounded-md overflow-hidden">
+    // 3. O link agora usa training.slug para a URL
+    <Link href={`/watch/${training.slug}`} className="flex items-center gap-4 p-2 rounded-lg hover:bg-emex-cinza-escuro transition-colors">
+      <div className="relative w-32 h-20 flex-shrink-0 rounded overflow-hidden">
         <Image
           src={training.thumbnailUrl}
           alt={training.title}
@@ -18,9 +21,10 @@ export default function NextTrainingCard({ training }: { training: Training }) {
           className="object-cover"
         />
       </div>
-      <div>
-        <h4 className="font-bold text-white group-hover:text-emex-laranja transition-colors">{training.title}</h4>
-        <p className="text-sm text-gray-400">Treinamento</p>
+      <div className="flex-grow">
+        <h4 className="font-semibold text-white text-sm line-clamp-2">
+          {training.title}
+        </h4>
       </div>
     </Link>
   );

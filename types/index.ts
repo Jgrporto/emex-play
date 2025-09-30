@@ -1,12 +1,19 @@
-// types/index.ts
 
 export type Training = {
   _id: string;
   title: string;
-  thumbnailUrl: string;
   description?: string;
-  slug: { current: string };
+  youtubeVideoId?: string;
+  slug: string; // O slug DEVE ser uma string opcional           
+  thumbnailUrl: string;
   fullTitle?: string;
+};
+
+export type NextTraining = {
+  _id: string;
+  title: string;
+  slug: string;             
+  thumbnailUrl: string;
 };
 
 export type Category = {

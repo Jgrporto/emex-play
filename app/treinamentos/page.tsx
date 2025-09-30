@@ -1,22 +1,36 @@
-import { Suspense } from 'react'; // 1. Importe o Suspense
+// app/treinamentos/page.tsx
+
+import { Suspense } from 'react';
 import { client } from '@/lib/sanityClient';
 import Navbar from '@/components/Navbar';
 import HeroCarousel from '@/components/HeroCarousel';
-import TrainingListClient from './TrainingListClient'; // 2. Importe o novo componente
+import TrainingListClient from './TrainingListClient';
+import Footer from '@/components/Footer';
 import type { PageData } from '@/types';
 
 async function getData(): Promise<PageData> {
   const query = `*[_type == "homepage" && _id == "homepage"][0]{
     "heroTrainings": *[_type == "training" && _id in ^.heroCarouselTrainingIds[]->._id]{
-      _id, title, "thumbnailUrl": thumbnailUrl.asset->url, description, slug
+      _id,
+      title,
+      description,
+      "slug": slug.current,
+      "thumbnailUrl": thumbnailUrl.asset->url
     },
     "categories": *[_type == "category"] | order(title asc){
-      _id, title, slug,
+      _id,
+      title,
+      "slug": slug.current, // <-- CORREÇÃO ADICIONADA AQUI
       "trainings": *[_type == "training" && references(^._id)]{
-         _id, title, "thumbnailUrl": thumbnailUrl.asset->url, description, slug
+         _id,
+         title,
+         description,
+         "slug": slug.current,
+         "thumbnailUrl": thumbnailUrl.asset->url
       }
     }
   }`;
+  
   const data = await client.fetch(query);
   return data;
 }
@@ -24,25 +38,29 @@ async function getData(): Promise<PageData> {
 export default async function TrainingsPage() {
   const data = await getData();
 
-  if (!data) {
-    return <div>Não foi possível carregar os dados.</div>;
+  if (!data || !data.heroTrainings || !data.categories) {
+    return (
+      <div className="bg-emex-preto min-h-screen text-white flex items-center justify-center">
+        <Navbar />
+        <p>Não foi possível carregar os dados. Tente novamente mais tarde.</p>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="bg-emex-preto">
       <Navbar />
       <main>
-        {/* O HeroCarousel não depende da busca, então ele pode ficar fora do Suspense */}
         <section className="bg-emex-preto">
           <HeroCarousel trainings={data.heroTrainings} />
         </section>
 
-        {/* 3. Envolva o componente de cliente com <Suspense> */}
-        <Suspense fallback={<div className="bg-secao-conteudo text-white text-center p-12">Carregando busca...</div>}>
+        <Suspense fallback={<div className="bg-secao-conteudo text-white text-center p-12">Carregando treinamentos...</div>}>
           <TrainingListClient categories={data.categories} />
         </Suspense>
 
       </main>
+      <Footer /> 
     </div>
   );
 }
