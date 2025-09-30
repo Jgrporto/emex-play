@@ -7,14 +7,21 @@ import Footer from '@/components/Footer';
 import WatchView from './WatchView';
 import type { Training, NextTraining } from '@/types';
 
-// O 'type Props' foi removido daqui.
-
 type QueryResult = {
   training: Training;
   categoryTrainings: NextTraining[];
 };
 
-// A CORREÇÃO ESTÁ AQUI: definimos o tipo diretamente na função, o que é mais explícito e seguro.
+// AJUSTE 1: Tipagem explícita também para a função de metadados
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const query = `*[_type == "training" && slug.current == $slug][0]{ title }`;
+  const training = await client.fetch<{ title: string }>(query, { slug: params.slug });
+  return {
+    title: `${training?.title || 'Treinamento'} | EMEX Play`,
+  };
+}
+
+// AJUSTE 2: Mantemos a tipagem explícita e inline para a função da página
 export default async function WatchPage({ params }: { params: { slug: string } }) {
   const query = `
     {
