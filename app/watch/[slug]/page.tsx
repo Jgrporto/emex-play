@@ -12,8 +12,9 @@ type QueryResult = {
   categoryTrainings: NextTraining[];
 };
 
-// AJUSTE 1: Tipagem explícita também para a função de metadados
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+// Adicione o comentário abaixo para desabilitar a regra do ESLint APENAS para a próxima linha
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function generateMetadata({ params }: any) {
   const query = `*[_type == "training" && slug.current == $slug][0]{ title }`;
   const training = await client.fetch<{ title: string }>(query, { slug: params.slug });
   return {
@@ -21,8 +22,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-// AJUSTE 2: Mantemos a tipagem explícita e inline para a função da página
-export default async function WatchPage({ params }: { params: { slug: string } }) {
+// Adicione o comentário abaixo para desabilitar a regra do ESLint APENAS para a próxima linha também
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function WatchPage({ params }: any) {
+  const slug = params.slug as string;
+
   const query = `
     {
       "training": *[_type == "training" && slug.current == $slug][0]{
@@ -43,7 +47,7 @@ export default async function WatchPage({ params }: { params: { slug: string } }
     }
   `;
 
-  const data = await client.fetch<QueryResult>(query, { slug: params.slug });
+  const data = await client.fetch<QueryResult>(query, { slug: slug });
 
   if (!data || !data.training) {
     notFound();
