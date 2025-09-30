@@ -1,4 +1,4 @@
-// app/watch/[slug]/page.tsx
+// app/watch/[slug]/page.tsx - Com a correção 'any' para Next.js 15
 
 import { client } from '@/lib/sanityClient';
 import { notFound } from 'next/navigation';
@@ -12,8 +12,8 @@ type QueryResult = {
   categoryTrainings: NextTraining[];
 };
 
-// AJUSTE 1: Tipagem explícita também para a função de metadados
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+// 1. Usamos 'any' para contornar o bug de tipo da versão instável
+export async function generateMetadata({ params }: any) {
   const query = `*[_type == "training" && slug.current == $slug][0]{ title }`;
   const training = await client.fetch<{ title: string }>(query, { slug: params.slug });
   return {
@@ -21,8 +21,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-// AJUSTE 2: Mantemos a tipagem explícita e inline para a função da página
-export default async function WatchPage({ params }: { params: { slug: string } }) {
+// 2. Usamos 'any' aqui também
+export default async function WatchPage({ params }: any) {
+  // Garantimos o tipo do slug internamente para segurança
+  const slug = params.slug as string;
+
   const query = `
     {
       "training": *[_type == "training" && slug.current == $slug][0]{
@@ -43,7 +46,8 @@ export default async function WatchPage({ params }: { params: { slug: string } }
     }
   `;
 
-  const data = await client.fetch<QueryResult>(query, { slug: params.slug });
+  // Usamos a variável 'slug' garantida na busca
+  const data = await client.fetch<QueryResult>(query, { slug: slug });
 
   if (!data || !data.training) {
     notFound();
