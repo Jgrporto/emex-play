@@ -1,5 +1,3 @@
-// app/watch/[slug]/WatchView.tsx
-
 "use client";
 
 import { useState } from 'react';
@@ -49,10 +47,26 @@ export default function WatchView({ training, nextTrainings }: WatchViewProps) {
 
           <h1 className="text-2xl font-bold text-white mb-3">{training.title}</h1>
           
+          {/* --- SEÇÃO DE BOTÕES ALTERADA --- */}
           <div className="flex items-center space-x-6 mb-6 text-gray-300">
-            <button onClick={() => setShowLikeModal(true)} className="flex items-center gap-2 hover:text-white transition-colors"><ThumbsUp size={20} /> Gostei</button>
-            <button onClick={() => setShowDislikeModal(true)} className="flex items-center gap-2 hover:text-white transition-colors"><ThumbsDown size={20} /> Não Gostei</button>
-            <button className="flex items-center gap-2 hover:text-white transition-colors"><Bookmark size={20} /> Salvar</button>
+            
+            <button 
+              onClick={() => setShowLikeModal(true)} 
+              className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer icon-hover-green"
+            >
+              <ThumbsUp size={20} className="transition-colors" /> Gostei
+            </button>
+            
+            <button 
+              onClick={() => setShowDislikeModal(true)} 
+              className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer icon-hover-orange"
+            >
+              <ThumbsDown size={20} className="transition-colors" /> Não Gostei
+            </button>
+            
+            <button className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer icon-hover-blue">
+              <Bookmark size={20} className="transition-colors" /> Salvar
+            </button>
           </div>
 
           <div className="bg-emex-cinza-escuro p-4 rounded-lg text-gray-300">

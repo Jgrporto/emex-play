@@ -57,3 +57,20 @@ body {
 }
 
 /* Animação de transição de página (Fade In) */
+
+/* --- NOVAS CLASSES DE HOVER PARA ÍCONES --- */
+
+/* Regra para o ícone ficar verde no hover */
+.icon-hover-green:hover svg {
+  color: #20B042; /* emex-verde */
+}
+
+/* Regra para o ícone ficar laranja no hover */
+.icon-hover-orange:hover svg {
+  color: #F57F17; /* emex-laranja */
+}
+
+/* Regra para o ícone ficar azul no hover */
+.icon-hover-blue:hover svg {
+  color: #00A3E0; /* emex-azul-claro */
+}

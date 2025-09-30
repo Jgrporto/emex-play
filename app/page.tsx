@@ -1,9 +1,16 @@
+// app/page.tsx
+
 import { client } from '@/lib/sanityClient';
-import HomePageClient from './HomePageClient'; // Importamos nosso novo componente
+import HomePageClient from './HomePageClient'; // Mantemos seu componente de cliente
+import type { Training } from '@/types'; // Importamos o tipo
+
+// Adicionamos a tipagem para os dados que a página espera
+interface PageData {
+  featuredTraining: Training;
+}
 
 // Função para buscar os dados no servidor
-async function getData() {
-  // Esta query busca o documento 'homepage' e o treinamento referenciado nele
+async function getData(): Promise<PageData> {
   const query = `*[_type == "homepage" && _id == "homepage"][0]{
     "featuredTraining": featuredTraining->{
       _id,
@@ -11,7 +18,7 @@ async function getData() {
       fullTitle,
       "thumbnailUrl": thumbnailUrl.asset->url,
       description,
-      slug
+      "slug": slug.current // <-- ESTA É A CORREÇÃO CRUCIAL
     }
   }`;
 
