@@ -1,9 +1,11 @@
+// app/layout.tsx
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { SearchProvider } from '@/context/SearchContext';
 import SearchModal from '@/components/SearchModal';
-import AuthProvider from '@/components/AuthProvider'; // <-- NOVA IMPORTAÇÃO
+import AuthProvider from '@/components/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,9 +22,9 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={inter.className}>
-        {/* Adicionamos o AuthProvider por fora de tudo */}
         <AuthProvider>
           <SearchProvider>
+            {/* Navbar e Footer foram removidos daqui */}
             {children}
             <SearchModal />
           </SearchProvider>

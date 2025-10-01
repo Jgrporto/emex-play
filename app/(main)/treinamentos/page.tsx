@@ -2,10 +2,8 @@
 
 import { Suspense } from 'react';
 import { client } from '@/lib/sanityClient';
-import Navbar from '@/components/Navbar';
 import HeroCarousel from '@/components/HeroCarousel';
 import TrainingListClient from './TrainingListClient';
-import Footer from '@/components/Footer';
 import type { PageData } from '@/types';
 
 async function getData(): Promise<PageData> {
@@ -41,7 +39,6 @@ export default async function TrainingsPage() {
   if (!data || !data.heroTrainings || !data.categories) {
     return (
       <div className="bg-emex-preto min-h-screen text-white flex items-center justify-center">
-        <Navbar />
         <p>Não foi possível carregar os dados. Tente novamente mais tarde.</p>
       </div>
     );
@@ -49,7 +46,6 @@ export default async function TrainingsPage() {
 
   return (
     <div className="bg-emex-preto">
-      <Navbar />
       <main>
         <section className="bg-emex-preto">
           <HeroCarousel trainings={data.heroTrainings} />
@@ -60,7 +56,6 @@ export default async function TrainingsPage() {
         </Suspense>
 
       </main>
-      <Footer /> 
     </div>
   );
 }

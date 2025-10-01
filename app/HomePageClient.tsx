@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import Navbar from '@/components/Navbar';
 import HeroBanner from '@/components/HeroBanner';
-import Footer from '@/components/Footer';
 import TrainingModal from '@/components/TrainingModal';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -14,8 +12,6 @@ export default function HomePageClient({ featuredTraining }: { featuredTraining:
 
   return (
     <div>
-      <Navbar />
-
       <main>
         <section className="bg-secao-apresentacao">
           {featuredTraining && (
@@ -41,8 +37,7 @@ export default function HomePageClient({ featuredTraining }: { featuredTraining:
       </main>
 
       <div className="bg-secao-conteudo">
-        <Footer />
-      </div>
+              </div>
 
       {selectedTraining && (
         <TrainingModal 

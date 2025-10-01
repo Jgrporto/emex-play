@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import TrainingCarousel from '@/components/TrainingCarousel';
-import Footer from '@/components/Footer';
 import TrainingModal from '@/components/TrainingModal';
 import type { Category, Training } from '@/types';
 
@@ -48,7 +47,6 @@ export default function TrainingList({ categories }: { categories: Category[] })
             </div>
           )}
         </div>
-        <Footer />
       </section>
 
       {selectedTraining && (

@@ -1,7 +1,7 @@
 // app/page.tsx
 
 import { client } from '@/lib/sanityClient';
-import HomePageClient from './HomePageClient'; // Mantemos seu componente de cliente
+import HomePageClient from '../HomePageClient'; // Mantemos seu componente de cliente
 import type { Training } from '@/types'; // Importamos o tipo
 
 // Adicionamos a tipagem para os dados que a página espera
