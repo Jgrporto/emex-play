@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { SearchProvider } from '@/context/SearchContext'; // 1. Importe o Provedor
-import SearchModal from '@/components/SearchModal';     // 2. Importe o Modal
-
+import { SearchProvider } from '@/context/SearchContext';
+import SearchModal from '@/components/SearchModal';
+import AuthProvider from '@/components/AuthProvider'; // <-- NOVA IMPORTAÇÃO
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,11 +20,13 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={inter.className}>
-        {/* 3. Envolva tudo com o SearchProvider */}
-        <SearchProvider>
-          {children}
-          <SearchModal /> {/* 4. Renderize o Modal aqui */}
-        </SearchProvider>
+        {/* Adicionamos o AuthProvider por fora de tudo */}
+        <AuthProvider>
+          <SearchProvider>
+            {children}
+            <SearchModal />
+          </SearchProvider>
+        </AuthProvider>
       </body>
     </html>
   );
