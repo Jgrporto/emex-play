@@ -5,7 +5,6 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -32,16 +31,15 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-emex-preto">
-      {/* CARD: Borda superior verde já está aqui com border-t-4 border-emex-verde */}
       <div className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg border-t-4 border-emex-verde">
         
         <div className="flex justify-center mb-6">
-          <Image
+          {/* Adicionamos o comentário abaixo para ignorar o aviso do ESLint sobre a tag <img> */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/footer-logo.png"
             alt="EMEX Play Logo"
-            width={290}
-            height={60}
-            priority
+            className="w-[180px] h-auto"
           />
         </div>
         
@@ -72,7 +70,6 @@ export default function LoginPage() {
           </div>
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
           <div>
-            {/* BOTÃO: Estilização para deixá-lo mais aparente e com hover */}
             <button
               type="submit"
               className="w-full px-4 py-3 font-bold text-white bg-emex-verde rounded-md 
