@@ -39,15 +39,11 @@ export default function LoginPage() {
           <Image
             src="/footer-logo.png"
             alt="EMEX Play Logo"
-            width={180}
+            width={290}
             height={60}
             priority
           />
         </div>
-        
-        <h2 className="text-2xl font-bold text-center text-white mb-8">
-          Acesse sua conta
-        </h2>
         
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
@@ -81,7 +77,8 @@ export default function LoginPage() {
               type="submit"
               className="w-full px-4 py-3 font-bold text-white bg-emex-verde rounded-md 
                          hover:bg-green-600 transition-all duration-300 ease-in-out 
-                         focus:outline-none focus:ring-2 focus:ring-emex-verde focus:ring-offset-2 focus:ring-offset-gray-800"
+                         focus:outline-none focus:ring-2 focus:ring-emex-verde focus:ring-offset-2 focus:ring-offset-gray-800
+                         cursor-pointer"
             >
               Entrar
             </button>

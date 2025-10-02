@@ -6,6 +6,8 @@ import './globals.css';
 import { SearchProvider } from '@/context/SearchContext';
 import SearchModal from '@/components/SearchModal';
 import AuthProvider from '@/components/AuthProvider';
+import { ProfileSidebarProvider } from '@/context/ProfileSidebarContext'; // Importe o provedor
+import ProfileSidebar from '@/components/ProfileSidebar'; // Importe a barra lateral
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -14,19 +16,20 @@ export const metadata: Metadata = {
   description: 'Plataforma de treinamentos da EMEX',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-br">
       <body className={inter.className}>
         <AuthProvider>
           <SearchProvider>
-            {/* Navbar e Footer foram removidos daqui */}
-            {children}
-            <SearchModal />
+            {/* Envolvemos com o novo provedor */}
+            <ProfileSidebarProvider>
+              <main>
+                {children}
+              </main>
+              <SearchModal />
+              <ProfileSidebar /> {/* Renderizamos a barra lateral aqui */}
+            </ProfileSidebarProvider>
           </SearchProvider>
         </AuthProvider>
       </body>
