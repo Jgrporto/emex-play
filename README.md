@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EMEX Play
 
-## Getting Started
+![EMEX Play Logo](public/emex-logo.png)
 
-First, run the development server:
+Plataforma interna de treinamentos da EMEX, desenvolvida com as tecnologias mais modernas para uma experiência de usuário rápida e fluida. O conteúdo é 100% gerenciável através de um painel de controle online (CMS).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ✨ Funcionalidades Principais
+
+* **Catálogo de Conteúdo Dinâmico:** Treinamentos e categorias gerenciados via Headless CMS (Sanity.io).
+* **Sistema de Autenticação Privado:** Login com email e senha para usuários pré-cadastrados.
+* **Painel de Gerenciamento Online:**
+    * **Sanity Studio:** Para gerenciar o conteúdo principal (treinamentos, categorias, perfis de usuário).
+    * **Painel Admin Interno:** Uma área segura dentro do próprio site para criar novos usuários com senhas criptografadas.
+* **Barra Lateral de Perfil de Usuário:** Acesso rápido a informações do usuário e função de logout.
+* **Busca de Conteúdo:** Funcionalidade de busca em tempo real na página de treinamentos.
+* **Design Responsivo:** Interface adaptada para desktops e dispositivos móveis.
+
+## 🔗 Links Importantes
+
+| Serviço | URL | Propósito |
+| :--- | :--- | :--- |
+| **Site em Produção** | `https://emex-play.vercel.app` | O site principal que os usuários acessam. |
+| **Painel de Conteúdo** | `https://seu-hostname.sanity.studio` | **(Principal)** Onde você cria/edita **treinamentos, categorias e edita perfis** (ex: troca de avatar). |
+| **Painel de Criação de Usuários**| `https://emex-play.vercel.app/admin/criar-usuario` | **(Ação Especial)** Onde você, como admin, cria **novos usuários** com suas senhas. |
+
+**Atenção:** Lembre-se de substituir `seu-hostname` pelo nome que você escolheu para o seu Sanity Studio.
+
+## 🚀 Tech Stack
+
+* **Framework:** Next.js (App Router)
+* **Estilização:** Tailwind CSS
+* **Autenticação:** NextAuth.js (Auth.js)
+* **Headless CMS:** Sanity.io
+* **Hospedagem (Frontend):** Vercel
+* **Hospedagem (CMS):** Sanity
+
+## 🛠️ Rodando o Projeto Localmente
+
+### Frontend (O Site)
+
+1.  Navegue até a pasta raiz do projeto.
+2.  Instale as dependências:
+    ```bash
+    npm install
+    ```
+3.  Execute o servidor de desenvolvimento:
+    ```bash
+    npm run dev
+    ```
+4.  Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
+
+### Backend (O Painel de Conteúdo)
+
+1.  Navegue até a pasta `studio`:
+    ```bash
+    cd studio
+    ```
+2.  Instale as dependências:
+    ```bash
+    npm install
+    ```
+3.  Execute o servidor de desenvolvimento do Sanity Studio:
+    ```bash
+    npm run dev
+    ```
+4.  Abra [http://localhost:3333](http://localhost:3333) no seu navegador.
+
+## 🔒 Variáveis de Ambiente
+
+Para rodar o projeto localmente, crie um arquivo chamado `.env.local` na raiz do projeto e adicione as seguintes variáveis:
+
+```env
+# Credenciais do Administrador (usado apenas no primeiro login, agora é gerenciado pelo Sanity)
+ADMIN_EMAIL=admin@emex.com
+ADMIN_PASSWORD=SUA_SENHA_FORTE_AQUI
+
+# Chave secreta para o Next-Auth
+NEXTAUTH_SECRET=UMA_CHAVE_SECRETA_QUALQUER_BEM_LONGA_E_DIFICIL
+
+# --- DADOS DO SANITY ---
+NEXT_PUBLIC_SANITY_PROJECT_ID=SEU_PROJECT_ID_DO_SANITY
+SANITY_API_TOKEN=SEU_TOKEN_DE_API_DO_SANITY_COM_PERMISSÃO_DE_ESCRITA
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
