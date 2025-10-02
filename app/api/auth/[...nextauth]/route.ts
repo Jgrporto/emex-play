@@ -6,7 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { client } from "@/lib/sanityClient";
 import bcrypt from "bcryptjs"; // Certifique-se de que o bcryptjs está sendo importado
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
