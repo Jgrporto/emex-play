@@ -37,7 +37,7 @@ export default function LoginPage() {
           {/* Adicionamos o comentário abaixo para ignorar o aviso do ESLint sobre a tag <img> */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/footer-logo.png"
+            src="https://cdn.sanity.io/images/w3oxdhv9/production/e9cc6d5783344680eda2b1c23fec6395351564c2-1920x1080.png"
             alt="EMEX Play Logo"
             className="w-[180px] h-auto"
           />
