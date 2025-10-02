@@ -20,10 +20,8 @@ Plataforma interna de treinamentos da EMEX, desenvolvida com as tecnologias mais
 | Serviço | URL | Propósito |
 | :--- | :--- | :--- |
 | **Site em Produção** | `https://emex-play.vercel.app` | O site principal que os usuários acessam. |
-| **Painel de Conteúdo** | `https://seu-hostname.sanity.studio` | **(Principal)** Onde você cria/edita **treinamentos, categorias e edita perfis** (ex: troca de avatar). |
+| **Painel de Conteúdo** | `https://emex-play-studio.sanity.studio` | **(Principal)** Onde você cria/edita **treinamentos, categorias e edita perfis** (ex: troca de avatar). |
 | **Painel de Criação de Usuários**| `https://emex-play.vercel.app/admin/criar-usuario` | **(Ação Especial)** Onde você, como admin, cria **novos usuários** com suas senhas. |
-
-**Atenção:** Lembre-se de substituir `seu-hostname` pelo nome que você escolheu para o seu Sanity Studio.
 
 ## 🚀 Tech Stack
 
