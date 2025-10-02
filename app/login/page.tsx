@@ -39,7 +39,7 @@ export default function LoginPage() {
           <img
             src="/footer-logo.png"
             alt="EMEX Play Logo"
-            className="w-[200px] h-auto"
+            className="w-[180px] h-auto"
           />
         </div>
         
