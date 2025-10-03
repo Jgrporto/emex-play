@@ -1,31 +1,22 @@
-// app/treinamentos/page.tsx
+// app/(main)/treinamentos/page.tsx
 
 import { Suspense } from 'react';
 import { client } from '@/lib/sanityClient';
-import HeroCarousel from '@/components/HeroCarousel';
 import TrainingListClient from './TrainingListClient';
-import type { PageData } from '@/types';
+import type { Category } from '@/types';
 
-async function getData(): Promise<PageData> {
-  const query = `*[_type == "homepage" && _id == "homepage"][0]{
-    "heroTrainings": *[_type == "training" && _id in ^.heroCarouselTrainingIds[]->._id]{
-      _id,
-      title,
-      description,
-      "slug": slug.current,
-      "thumbnailUrl": thumbnailUrl.asset->url
-    },
-    "categories": *[_type == "category"] | order(title asc){
-      _id,
-      title,
-      "slug": slug.current, // <-- CORREÇÃO ADICIONADA AQUI
-      "trainings": *[_type == "training" && references(^._id)]{
-         _id,
-         title,
-         description,
-         "slug": slug.current,
-         "thumbnailUrl": thumbnailUrl.asset->url
-      }
+async function getCategoriesData(): Promise<Category[]> {
+  const query = `*[_type == "category"] | order(title asc){
+    _id,
+    title,
+    "slug": slug.current, // <-- A CORREÇÃO ESTÁ AQUI
+    "trainings": *[_type == "training" && references(^._id)]{
+       _id,
+       title,
+       description,
+       "slug": slug.current,
+       "thumbnailUrl": thumbnailUrl.asset->url,
+       platform
     }
   }`;
   
@@ -34,28 +25,22 @@ async function getData(): Promise<PageData> {
 }
 
 export default async function TrainingsPage() {
-  const data = await getData();
+  const categories = await getCategoriesData();
 
-  if (!data || !data.heroTrainings || !data.categories) {
+  if (!categories || categories.length === 0) {
     return (
-      <div className="bg-emex-preto min-h-screen text-white flex items-center justify-center">
-        <p>Não foi possível carregar os dados. Tente novamente mais tarde.</p>
-      </div>
+      <main className="pt-24 bg-emex-preto min-h-screen text-white flex items-center justify-center">
+        <p>Nenhum treinamento encontrado.</p>
+      </main>
     );
   }
 
   return (
-    <div className="bg-emex-preto">
-      <main>
-        <section className="bg-emex-preto">
-          <HeroCarousel trainings={data.heroTrainings} />
-        </section>
-
-        <Suspense fallback={<div className="bg-secao-conteudo text-white text-center p-12">Carregando treinamentos...</div>}>
-          <TrainingListClient categories={data.categories} />
-        </Suspense>
-
-      </main>
-    </div>
+    // GARANTA QUE O PADDING LATERAL (px-...) ESTÁ AQUI
+    <main className="pt-24 bg-emex-preto px-4 sm:px-6 lg:px-8">
+      <Suspense fallback={<div className="text-white text-center p-12">Carregando treinamentos...</div>}>
+        <TrainingListClient categories={categories} />
+      </Suspense>
+    </main>
   );
 }

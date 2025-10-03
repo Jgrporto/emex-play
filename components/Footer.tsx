@@ -28,58 +28,45 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-emex-preto border-t border-gray-800 py-12 text-gray-400 relative">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* A CORREÇÃO ESTÁ AQUI: adicionamos 'items-start' */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
-          
-          {/* Coluna 1: Logo e Copyright */}
-          <div className="space-y-4">
-            <Link href="/">
-                <Image
-                    src="/footer-logo.png"
-                    alt="EMEX Play Logo"
-                    width={150} // Mantendo o tamanho maior que você pediu
-                    height={50}
-                />
-            </Link>
-            <p className="text-sm">&copy; {new Date().getFullYear()} João Gabriel Rodrigues Porto.<br/>Todos os direitos reservados.</p>
-          </div>
+    // CORRIGIDO: Voltamos para a cor customizada bg-emex-preto
+    <footer className="w-full bg-emex-preto border-t border-gray-800 py-12 text-gray-400 relative px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start text-left">
+        
+        <div className="space-y-4 md:col-span-1">
+          <Link href="/">
+            <Image src="/footer-logo.png" alt="EMEX Play Logo" width={150} height={50} />
+          </Link>
+          <p className="text-sm">&copy; {new Date().getFullYear()} João Gabriel Rodrigues Porto.<br/>Todos os direitos reservados.</p>
+        </div>
 
-          {/* Coluna 2: Navegue */}
-          <div>
-            <h3 className="font-bold text-white mb-4">Navegue</h3>
-            <ul className="space-y-2">
-              <li><Link href="/" className="hover:text-white transition-colors">Início</Link></li>
-              <li><Link href="/treinamentos" className="hover:text-white transition-colors">Treinamentos</Link></li>
-              <li><Link href="/minha-lista" className="hover:text-white transition-colors">Minha Lista</Link></li>
-            </ul>
-          </div>
+        <div className="md:justify-self-center">
+          <h3 className="font-bold text-white mb-4">Navegue</h3>
+          <ul className="space-y-2">
+            <li><Link href="/" className="hover:text-white transition-colors">Início</Link></li>
+            <li><Link href="/treinamentos" className="hover:text-white transition-colors">Treinamentos</Link></li>
+            <li><Link href="/minha-lista" className="hover:text-white transition-colors">Minha Lista</Link></li>
+          </ul>
+        </div>
 
-          {/* Coluna 3: Termos e Ajuda */}
-          <div>
-            <h3 className="font-bold text-white mb-4">Termos e ajuda</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white transition-colors">Termos de uso</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Políticas de privacidade</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Suporte</a></li>
-            </ul>
-          </div>
+        <div className="md:justify-self-center">
+          <h3 className="font-bold text-white mb-4">Termos e ajuda</h3>
+          <ul className="space-y-2">
+            <li><a href="#" className="hover:text-white transition-colors">Termos de uso</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Políticas de privacidade</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Suporte</a></li>
+          </ul>
+        </div>
 
-          {/* Coluna 4: Redes Sociais */}
-          <div>
-            <h3 className="font-bold text-white mb-4">Redes sociais</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="flex items-center gap-2 hover:text-white transition-colors"><Youtube size={20} /> YouTube</a></li>
-              <li><a href="#" className="flex items-center gap-2 hover:text-white transition-colors"><Facebook size={20} /> Facebook</a></li>
-              <li><a href="#" className="flex items-center gap-2 hover:text-white transition-colors"><Instagram size={20} /> Instagram</a></li>
-            </ul>
-          </div>
-
+        <div className="md:justify-self-end">
+          <h3 className="font-bold text-white mb-4">Redes sociais</h3>
+          <ul className="space-y-3">
+            <li><a href="#" className="flex items-center gap-2 hover:text-white transition-colors"><Youtube size={20} /> YouTube</a></li>
+            <li><a href="#" className="flex items-center gap-2 hover:text-white transition-colors"><Facebook size={20} /> Facebook</a></li>
+            <li><a href="#" className="flex items-center gap-2 hover:text-white transition-colors"><Instagram size={20} /> Instagram</a></li>
+          </ul>
         </div>
       </div>
 
-      {/* Botão "Voltar ao Topo" */}
       {isVisible && (
         <button 
           onClick={scrollToTop}

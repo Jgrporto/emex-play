@@ -2,8 +2,6 @@
 
 import { client } from '@/lib/sanityClient';
 import { notFound } from 'next/navigation';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import WatchView from './WatchView';
 import type { Training, NextTraining } from '@/types';
 
@@ -58,11 +56,9 @@ export default async function WatchPage({ params }: any) {
 
   return (
     <div className="bg-emex-preto min-h-screen text-white flex flex-col">
-      <Navbar />
       <div className="flex-grow">
         <WatchView training={data.training} nextTrainings={nextTrainings} />
       </div>
-      <Footer />
     </div>
   );
 }
