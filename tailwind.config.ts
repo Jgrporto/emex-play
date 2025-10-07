@@ -22,6 +22,12 @@ module.exports = {
         'secao-conteudo': '#181717',
         'modal-conteudo': '#1F1F1F',
       },
+      scale: {
+        '108': '1.08',
+      },
+      boxShadow: {
+        'netflix': '0 10px 20px rgba(0,0,0,0.6)',
+      }
     },
   },
   plugins: [

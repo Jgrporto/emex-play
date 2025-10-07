@@ -74,3 +74,12 @@ body {
 .icon-hover-blue:hover svg {
   color: #00A3E0; /* emex-azul-claro */
 }
+
+/* hide scrollbar (fallback) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

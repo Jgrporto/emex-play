@@ -14,11 +14,16 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const { toggleSidebar } = useProfileSidebar();
 
+  // Verifica se estamos em uma página de vídeo para mudar o comportamento da Navbar
+  const isWatchPage = pathname.startsWith('/watch/');
+
+  // Define as classes do header com base na página atual
+  const headerClasses = isWatchPage
+    ? "w-full bg-emex-preto px-4 sm:px-6 lg:px-8" // Estilo para a página de vídeo (não-fixo)
+    : "w-full fixed top-0 left-0 right-0 z-50 bg-emex-preto/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8"; // Estilo para as outras páginas (fixo)
+
   return (
-    // O header agora controla o padding lateral diretamente (px-4, etc.)
-    <header className="w-full fixed top-0 left-0 right-0 z-50 bg-emex-preto/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
-      {/* A div interna com 'max-w-7xl' foi REMOVIDA. */}
-      {/* O conteúdo agora se expande naturalmente. */}
+    <header className={headerClasses}>
       <div className="flex items-center justify-between h-24">
         
         {/* Lado Esquerdo: Logo e Navegação */}
