@@ -83,3 +83,8 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+
+.text-link-azul {
+  color: #00A3E0; /* Cor exata do emex-azul-claro */
+}
