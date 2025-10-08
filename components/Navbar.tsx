@@ -14,17 +14,18 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const { toggleSidebar } = useProfileSidebar();
 
-  // Verifica se estamos em uma página de vídeo para mudar o comportamento da Navbar
   const isWatchPage = pathname.startsWith('/watch/');
 
   // Define as classes do header com base na página atual
   const headerClasses = isWatchPage
-    ? "w-full bg-emex-preto px-4 sm:px-6 lg:px-8" // Estilo para a página de vídeo (não-fixo)
-    : "w-full fixed top-0 left-0 right-0 z-50 bg-emex-preto/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8"; // Estilo para as outras páginas (fixo)
+    ? "w-full bg-emex-preto px-4 sm:px-6 lg:px-8" // Mantém fundo sólido na pág. de vídeo
+    : "w-full fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 py-6 " + // Adicionamos padding vertical
+      "bg-gradient-to-b from-black to-transparent"; // Efeito de gradiente
 
   return (
     <header className={headerClasses}>
-      <div className="flex items-center justify-between h-24">
+      {/* A altura fixa (h-24) foi removida para um layout mais fluido */}
+       <div className="flex items-center justify-between">
         
         {/* Lado Esquerdo: Logo e Navegação */}
         <div className="flex items-center space-x-8">

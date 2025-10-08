@@ -27,3 +27,17 @@ export type PageData = {
     heroTrainings: Training[];
     categories: Category[];
 };
+
+export type Banner = {
+  _id: string;
+  titulo: string;
+  descricao?: string;
+  link?: string;
+  imagem: {
+    asset: {
+      url: string;
+    };
+  };
+  mostrarBotao?: boolean; // <-- ADICIONADO
+  textoDoBotao?: string;  // <-- ADICIONADO
+};
