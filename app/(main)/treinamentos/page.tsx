@@ -35,13 +35,16 @@ export default async function TrainingsPage() {
     // Isso permite que o banner comece no topo da página.
     <main className="bg-emex-preto">
       
-      {/* O Carrossel de Banners agora é o primeiro elemento. */}
       {banners && banners.length > 0 && (
-        <HeroBannerCarousel banners={banners} />
+        // O banner agora tem um 'relative' para o z-index funcionar
+        <section className="relative z-10">
+          <HeroBannerCarousel banners={banners} />
+        </section>
       )}
 
-      {/* A lista de treinamentos agora tem seu próprio espaçamento e padding. */}
-      <div className="px-4 sm:px-6 lg:px-8 mt-12">
+      {/* --- A MUDANÇA PRINCIPAL ESTÁ AQUI --- */}
+      {/* Adicionamos uma margem negativa no topo ('-mt-20') para puxar esta seção para cima */}
+      <div className="relative z-20 -mt-12 px-4 sm:px-6 lg:px-8">
         <Suspense fallback={<div className="text-white text-center p-12">Carregando treinamentos...</div>}>
           <TrainingListClient categories={categories} />
         </Suspense>

@@ -55,7 +55,7 @@ export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps)
                 {banner.mostrarBotao && banner.link && (
                   <div className="mt-8">
                     <Link href={banner.link} passHref>
-                      <button className="bg-emex-verde text-white font-bold py-3 px-6 rounded-md hover:bg-green-600 transition-colors duration-300">
+                      <button className="bg-emex-verde text-white font-bold py-3 px-6 rounded-md hover:bg-green-600 transition-colors duration-300 cursor-pointer">
                         {banner.textoDoBotao || 'Acessar'}
                       </button>
                     </Link>
@@ -69,19 +69,21 @@ export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps)
 
       {/* --- NOVA BORDA DEGRADÊ PARA FAZER A TRANSIÇÃO --- */}
       {/* Esta div cria um degradê que se funde com o fundo do site (emex-preto) */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-emex-preto via-emex-preto/70 to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-full h-32 banner-vignette z-10 pointer-events-none"></div>
 
-      {/* Botões de Navegação Customizados (z-index maior para ficarem acima do degradê) */}
+{/* --- COR DAS SETAS ALTERADA AQUI --- */}
       <div className="swiper-button-prev-hero absolute top-1/2 left-0 -translate-y-1/2 z-20 
                       h-full w-24 flex items-center justify-start 
                       cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
+        {/* Trocamos 'from-black/50' por 'from-emex-preto/70' */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emex-preto/70 to-transparent"></div>
         <ChevronLeft size={40} className="relative text-white" />
       </div>
       <div className="swiper-button-next-hero absolute top-1/2 right-0 -translate-y-1/2 z-20
                       h-full w-24 flex items-center justify-center
                       cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="absolute inset-0 bg-gradient-to-l from-black/50 to-transparent"></div>
+        {/* Trocamos 'from-black/50' por 'from-emex-preto/70' */}
+        <div className="absolute inset-0 bg-gradient-to-l from-emex-preto/70 to-transparent"></div>
         <ChevronRight size={40} className="relative text-white" />
       </div>
     </div>

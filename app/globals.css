@@ -88,3 +88,8 @@ body {
 .text-link-azul {
   color: #00A3E0; /* Cor exata do emex-azul-claro */
 }
+
+/* Classe manual para o efeito de vinheta/degradê do banner */
+.banner-vignette {
+  background-image: linear-gradient(to top, #141414, rgba(20, 20, 20, 0.7), transparent);
+}
