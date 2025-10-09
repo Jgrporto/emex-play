@@ -28,16 +28,25 @@ export type PageData = {
     categories: Category[];
 };
 
+export type SanityImageObject = {
+  asset: {
+    url: string;
+  };
+  hotspot?: {
+    x: number;
+    y: number;
+    height: number;
+    width: number;
+  };
+};
+
 export type Banner = {
   _id: string;
   titulo: string;
   descricao?: string;
   link?: string;
-  imagem: {
-    asset: {
-      url: string;
-    };
-  };
+  imagem: SanityImageObject; // Alterado aqui
+  imagemUrlOtimizada: string;
   mostrarBotao?: boolean; // <-- ADICIONADO
   textoDoBotao?: string;  // <-- ADICIONADO
 };

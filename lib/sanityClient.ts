@@ -1,6 +1,7 @@
 // lib/sanityClient.ts
 import { createClient } from 'next-sanity'
 
+
 // Buscamos o projectId da variável de ambiente
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 

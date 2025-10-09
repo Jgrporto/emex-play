@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { client } from '@/lib/sanityClient';
+import { urlFor } from '@/lib/sanityImageUrl';
 import TrainingListClient from './TrainingListClient';
 import HeroBannerCarousel from '@/components/HeroBannerCarousel';
 import type { Category, Banner } from '@/types';
@@ -19,31 +20,41 @@ async function getData(): Promise<TreinamentosPageData> {
     },
     "banners": *[_type == "bannerTreinamento" && ativo == true] | order(_createdAt desc){
       _id, titulo, descricao, link, mostrarBotao, textoDoBotao,
-      "imagem": imagem{asset->{url}}
+      // --- ALTERAÇÃO AQUI: Pedimos o objeto 'imagem' com o 'hotspot' ---
+      "imagem": imagem{asset->, hotspot} 
     }
   }`;
   
   const data = await client.fetch(query);
-  return data;
+
+  const bannersWithOptimizedImages = data.banners.map((banner: Banner) => ({
+    ...banner,
+    imagemUrlOtimizada: urlFor(banner.imagem)
+      .width(1920)
+      .quality(90)
+      .fit('max')
+      .auto('format')
+      .url(),
+  }));
+
+  return {
+    categories: data.categories,
+    banners: bannersWithOptimizedImages,
+  };
 }
 
 export default async function TrainingsPage() {
   const { categories, banners } = await getData();
 
   return (
-    // A tag <main> AGORA NÃO TEM MAIS NENHUM PADDING NO TOPO.
-    // Isso permite que o banner comece no topo da página.
     <main className="bg-emex-preto">
       
       {banners && banners.length > 0 && (
-        // O banner agora tem um 'relative' para o z-index funcionar
         <section className="relative z-10">
           <HeroBannerCarousel banners={banners} />
         </section>
       )}
 
-      {/* --- A MUDANÇA PRINCIPAL ESTÁ AQUI --- */}
-      {/* Adicionamos uma margem negativa no topo ('-mt-20') para puxar esta seção para cima */}
       <div className="relative z-20 -mt-12 px-4 sm:px-6 lg:px-8">
         <Suspense fallback={<div className="text-white text-center p-12">Carregando treinamentos...</div>}>
           <TrainingListClient categories={categories} />
