@@ -23,7 +23,7 @@ export type Training = {
   fullTitle?: string;
   tag?: string;
   numeroDeTreinamentos?: string;
-  episodes?: Episode[]; // <-- Adicionado para a lista de episódios
+  episodes?: Episode[];
 };
 
 export type NextTraining = {

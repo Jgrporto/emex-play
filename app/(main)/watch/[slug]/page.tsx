@@ -40,8 +40,7 @@ async function getData(slug: string): Promise<WatchPageData> {
   };
 }
 
-// --- A CORREÇÃO ESTÁ AQUI ---
-// Usamos 'any' para as props e desabilitamos o aviso do ESLint
+// Usamos 'any' para as props para contornar o bug de tipo da versão experimental do Next.js
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function WatchPage({ params, searchParams }: any) {
   const { series, episodes } = await getData(params.slug);
@@ -50,6 +49,7 @@ export default async function WatchPage({ params, searchParams }: any) {
     notFound();
   }
 
+  // Lógica para encontrar o episódio correto para tocar
   const currentEpisodeNumber = parseInt(searchParams.episode || '1', 10);
   const episodeToPlay = episodes.find(ep => ep.episodeNumber === currentEpisodeNumber) || episodes[0];
 
@@ -63,6 +63,7 @@ export default async function WatchPage({ params, searchParams }: any) {
               <iframe
                 width="100%"
                 height="100%"
+                // AQUI USAMOS O 'youtubeVideoId' DO EPISÓDIO
                 src={`https://www.youtube.com/embed/${episodeToPlay.youtubeVideoId}?autoplay=1&rel=0&modestbranding=1`}
                 title={episodeToPlay.title}
                 frameBorder="0"
@@ -80,6 +81,7 @@ export default async function WatchPage({ params, searchParams }: any) {
             </p>
           </div>
 
+          {/* Lista de Próximos Episódios */}
           <div className="w-full lg:w-1/3">
             <h3 className="text-2xl font-bold mb-4">Próximos Episódios</h3>
             <div className="space-y-4 max-h-[80vh] overflow-y-auto scrollbar-hide">
