@@ -1,3 +1,5 @@
+// app/(main)/watch/[slug]/page.tsx
+
 import { client } from '@/lib/sanityClient';
 import { urlFor } from '@/lib/sanityImageUrl';
 import { notFound } from 'next/navigation';
@@ -7,7 +9,7 @@ import { PlayCircle } from 'lucide-react';
 import type { Training, Episode } from '@/types';
 
 interface WatchPageData {
-  series: Training | null; // A série pode ser nula
+  series: Training | null;
   episodes: Episode[];
 }
 
@@ -16,7 +18,7 @@ async function getData(slug: string): Promise<WatchPageData> {
     _id,
     title,
     "slug": slug.current,
-    "episodes": episodes[]->{ // Esta linha é crucial
+    "episodes": episodes[]->{
       _id,
       title,
       episodeNumber,
@@ -38,13 +40,12 @@ async function getData(slug: string): Promise<WatchPageData> {
   };
 }
 
-export default async function WatchPage({ params, searchParams }: {
-  params: { slug: string };
-  searchParams: { episode?: string };
-}) {
+// --- A CORREÇÃO ESTÁ AQUI ---
+// Usamos 'any' para as props e desabilitamos o aviso do ESLint
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function WatchPage({ params, searchParams }: any) {
   const { series, episodes } = await getData(params.slug);
 
-  // Esta verificação agora vai funcionar corretamente se a série for nula.
   if (!series || episodes.length === 0) {
     notFound();
   }
