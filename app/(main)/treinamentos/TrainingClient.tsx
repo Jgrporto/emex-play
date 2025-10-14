@@ -8,6 +8,7 @@ import TrainingCarousel from '@/components/TrainingCarousel';
 import TrainingModal from '@/components/TrainingModal';
 import type { PageData, Training } from '@/types';
 import Link from 'next/link';
+import { client } from '@/lib/sanityClient'; // 1. Importamos o cliente Sanity
 
 interface Props {
   initialData: PageData;
@@ -16,6 +17,7 @@ interface Props {
 export default function TrainingClient({ initialData }: Props) {
   const [data] = useState<PageData>(initialData);
   const [selectedTraining, setSelectedTraining] = useState<Training | null>(null);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false); // 2. Estado para o feedback de carregamento
 
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q') || '';
@@ -33,9 +35,36 @@ export default function TrainingClient({ initialData }: Props) {
       .filter(category => category.trainings.length > 0);
   }, [searchQuery, data]);
 
+  // 3. NOVA FUNÇÃO DE CLIQUE QUE BUSCA OS DADOS COMPLETOS
+  const handleInfoClick = async (training: Training) => {
+    setIsLoadingDetails(true);
+    
+    const query = `*[_type == "training" && _id == $id][0]{
+      ..., // Pega todos os campos da série (título, descrição, etc.)
+      "episodes": episodes[]->{ // Expande a lista de episódios referenciados
+        _id,
+        title,
+        episodeNumber,
+        description,
+        "thumbnail": thumbnail{asset->{url}},
+        youtubeVideoId
+      } | order(episodeNumber asc)
+    }`;
+
+    try {
+      const fullTrainingData = await client.fetch(query, { id: training._id });
+      setSelectedTraining(fullTrainingData);
+    } catch (error) {
+      console.error("Erro ao buscar detalhes da série:", error);
+    } finally {
+      setIsLoadingDetails(false);
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       {!searchQuery && <HeroCarousel trainings={data.heroTrainings} />}
+      
       {filteredCategories.length > 0 ? (
         filteredCategories.map(category => (
           <TrainingCarousel
@@ -43,7 +72,7 @@ export default function TrainingClient({ initialData }: Props) {
             title={category.title}
             slug={category.slug.current}
             trainings={category.trainings}
-            onInfoClick={setSelectedTraining}
+            onInfoClick={handleInfoClick} // 4. Usamos a nova função de clique
           />
         ))
       ) : (
@@ -51,16 +80,23 @@ export default function TrainingClient({ initialData }: Props) {
           <h2 className="text-4xl font-bold text-white mb-2">Ops!</h2>
           <p className="text-lg mb-8">Não encontramos nada que corresponda à sua pesquisa.</p>
           <Link
-            href="/"
+            href="/treinamentos" // Corrigido para voltar para a própria página de treinamentos
             className="bg-emex-azul-claro text-white font-bold px-6 py-3 rounded hover:brightness-110 transition-all duration-300"
           >
-            Voltar para a página inicial
+            Limpar busca
           </Link>
         </div>
       )}
 
       {selectedTraining && (
         <TrainingModal training={selectedTraining} onClose={() => setSelectedTraining(null)} />
+      )}
+
+      {/* 5. ADICIONADO FEEDBACK DE CARREGAMENTO */}
+      {isLoadingDetails && (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center">
+          <div className="w-16 h-16 border-4 border-t-emex-verde border-gray-700 rounded-full animate-spin"></div>
+        </div>
       )}
     </motion.div>
   );

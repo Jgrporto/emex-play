@@ -11,6 +11,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+
+      zIndex: {
+        'popout': '30', // Um z-index bem alto para o card expandido
+        'carousel-content': '10', // Um z-index padrão para outros conteúdos do carrossel
+      },
       // Garante que nossas cores customizadas existam
       colors: {
         'emex-verde': '#20B042',
@@ -23,10 +28,16 @@ module.exports = {
         'modal-conteudo': '#1F1F1F',
       },
       scale: {
-        '108': '1.08',
+        '108': '1.08', // Manter se ainda for útil para a imagem
       },
       boxShadow: {
         'netflix': '0 10px 20px rgba(0,0,0,0.6)',
+      },
+      width: {
+        'card-expanded': '20rem', // Largura do card quando expandido (aprox. 320px)
+      },
+      height: {
+        'card-details-panel': '12rem', // Altura do painel de detalhes (aprox. 192px)
       }
     },
   },

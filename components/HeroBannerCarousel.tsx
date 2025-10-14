@@ -17,7 +17,7 @@ type HeroBannerCarouselProps = {
 
 export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
   return (
-    <div className="relative w-full h-[60vh] lg:h-[70vh] group">
+    <div className="relative w-full h-[60vh] lg:h-[70vh] group z-10">
       <Swiper
         modules={[Navigation, Autoplay, EffectFade]}
         navigation={{
@@ -53,7 +53,7 @@ export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps)
                   // Estilo dinâmico aplicado para o enquadramento correto
                   style={imageStyle} 
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent p-8 sm:p-12 flex flex-col justify-center items-start z-20">
+                inset-0 bg-gradient-to-r from-black/80 via-bla <div className="absoluteck/50 to-transparent p-8 sm:p-12 flex flex-col justify-center items-start z-20">
                   <h2 className="text-3xl sm:text-4xl font-bold text-white max-w-md">
                     {banner.titulo}
                   </h2>
@@ -78,7 +78,7 @@ export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps)
         })}
       </Swiper>
 
-      <div className="absolute bottom-0 left-0 w-full h-32 banner-vignette z-10 pointer-events-none"></div>
+       <div className="absolute bottom-0 left-0 w-full h-32 banner-vignette z-5 pointer-events-none"></div>
 
       <div className="swiper-button-prev-hero absolute top-1/2 left-0 -translate-y-1/2 z-20 h-full w-24 flex items-center justify-start cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="absolute inset-0 bg-gradient-to-r from-emex-preto/70 to-transparent"></div>

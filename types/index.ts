@@ -1,12 +1,29 @@
 
+// --- NOVO TIPO PARA EPISÓDIOS ---
+export type Episode = {
+  _id: string;
+  title: string;
+  episodeNumber: number;
+  description: string;
+  thumbnail: {
+    asset: {
+      url: string;
+    };
+  };
+  youtubeVideoId: string;
+};
+
+// --- TIPO TRAINING ATUALIZADO ---
 export type Training = {
   _id: string;
   title: string;
-  description?: string;
-  youtubeVideoId?: string;
-  slug: string; // O slug DEVE ser uma string opcional           
+  slug?: string;
   thumbnailUrl: string;
+  description?: string;
   fullTitle?: string;
+  tag?: string;
+  numeroDeTreinamentos?: string;
+  episodes?: Episode[]; // <-- Adicionado para a lista de episódios
 };
 
 export type NextTraining = {

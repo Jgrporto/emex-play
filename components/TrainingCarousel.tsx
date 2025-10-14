@@ -15,7 +15,6 @@ type TrainingCarouselProps = {
 
 export default function TrainingCarousel({ title, slug, trainings, onInfoClick }: TrainingCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  // Este estado controla o hover GERAL (para as setas grandes e a seta pequena)
   const [isHovered, setIsHovered] = useState(false);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -32,66 +31,61 @@ export default function TrainingCarousel({ title, slug, trainings, onInfoClick }
   }
 
   return (
-    // O container principal agora controla o hover GERAL
-    <div 
-      className="mb-12"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="mb-20"> {/* Aumentamos a margem inferior para dar mais espaço para a expansão */}
       <div className="flex justify-between items-center mb-4 px-4 sm:px-6 lg:px-8">
-        {/* O 'group' aqui controla o hover ESPECÍFICO do título */}
-        <Link href={`/categoria/${slug}`} className="group flex items-center gap-2">
-          <h2 className="text-2xl font-bold text-white group-hover:text-gray-300 transition-colors">{title}</h2>
-          
-          <div 
-            // A SETA PEQUENA aparece com o hover GERAL
-            className={`flex items-center text-sm text-link-azul font-semibold transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
-          >
-            {/* O TEXTO 'Ver tudo' aparece com o hover ESPECÍFICO do título */}
-            <span className="max-w-0 group-hover:max-w-xs transition-all duration-300 overflow-hidden whitespace-nowrap">
-              Ver tudo
-            </span>
-            <ChevronRight size={24} className="transition-transform duration-300 group-hover:translate-x-1" />
-          </div>
-        </Link>
+        <h2 className="text-2xl font-bold text-white">{title}</h2>
+        {slug && (
+          <Link href={`/categoria/${slug}`} className="text-sm text-gray-400 hover:text-white transition-colors font-semibold">
+            Explorar tudo
+          </Link>
+        )}
       </div>
 
-      <div className="relative -mx-4 sm:-mx-6 lg:-mx-8">
+      <div
+        className="relative -mx-4 sm:-mx-6 lg:-mx-8"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div 
           ref={scrollRef}
           className="flex space-x-4 overflow-x-auto scrollbar-hide scroll-smooth py-4 px-4 sm:px-6 lg:px-8"
         >
+          {/* --- A ALTERAÇÃO ESTÁ AQUI: ENVOLVEMOS O CARD COM O PLACEHOLDER --- */}
           {trainings.map((training) => (
-            <TrainingCard 
-              key={training._id} 
-              training={training} 
-              onInfoClick={onInfoClick}
-            />
+            // Esta div é o "placeholder" que segura o espaço na fileira
+            <div key={training._id} className="relative aspect-video w-72 flex-shrink-0">
+              <TrainingCard 
+                training={training} 
+                onInfoClick={onInfoClick}
+              />
+            </div>
           ))}
         </div>
         
-        {/* As SETAS GRANDES também usam o hover GERAL */}
+        {/* As setas de navegação continuam as mesmas */}
         <button 
           onClick={() => scroll('left')}
-          className={`absolute top-1/2 -translate-y-1/2 left-0 h-40 z-20 
+          className={`absolute top-1/2 -translate-y-1/2 left-0 h-40 z-30 
                      w-16 sm:w-20 lg:w-24 
-                     transition-opacity duration-300 flex items-center justify-start
+                     transition-opacity duration-300
+                     flex items-center justify-start
                      cursor-pointer focus:outline-none
-                     ${isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                     ${isHovered ? 'opacity-100' : 'opacity-0'}`}
         >
-          <div className="absolute inset-0 bg-gradient-to-r to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-emex-preto to-transparent"></div>
           <ChevronLeft size={40} className="relative text-white" />
         </button>
 
         <button 
           onClick={() => scroll('right')}
-          className={`absolute top-1/2 -translate-y-1/2 right-0 h-40 z-20
+          className={`absolute top-1/2 -translate-y-1/2 right-0 h-40 z-30
                      w-16 sm:w-20 lg:w-24
-                     transition-opacity duration-300 flex items-center justify-end
+                     transition-opacity duration-300
+                     flex items-center justify-end
                      cursor-pointer focus:outline-none
-                     ${isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                     ${isHovered ? 'opacity-100' : 'opacity-0'}`}
         >
-          <div className="absolute inset-0 bg-gradient-to-l to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-l from-emex-preto to-transparent"></div>
           <ChevronRight size={40} className="relative text-white" />
         </button>
       </div>

@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { X, Play } from 'lucide-react';
+import { X, Play, Plus, ThumbsUp } from 'lucide-react';
 import type { Training } from '@/types';
-import React from 'react'; // Importamos o React para usar o MouseEvent
+import EpisodeListItem from './EpisodeListItem';
+import { useEffect } from 'react';
 
 type TrainingModalProps = {
   training: Training | null;
@@ -12,66 +13,91 @@ type TrainingModalProps = {
 };
 
 export default function TrainingModal({ training, onClose }: TrainingModalProps) {
-  if (!training) {
-    return null;
-  }
+  
+  // Lógica para travar a rolagem da página principal
+  useEffect(() => {
+    // Quando o modal abre, adiciona uma classe ao body que desativa o scroll
+    document.body.classList.add('overflow-hidden');
 
-  const hasSlug = training && training.slug;
+    // Função de limpeza: será executada quando o modal fechar
+    return () => {
+      // Remove a classe para reativar o scroll
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, []); // O array vazio garante que isso rode apenas uma vez (ao abrir e fechar)
 
-  // Função para impedir que o clique dentro do modal o feche
-  const handleModalContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
+  if (!training) return null;
+
+  const firstEpisode = training.episodes?.[0];
 
   return (
-    // MELHORIA DE UX: Adicionado onClick={onClose} para fechar ao clicar no fundo
     <div 
-      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/90 z-50 p-4 sm:p-8 overflow-y-auto"
       onClick={onClose}
     >
       <div 
-        className="bg-modal-conteudo rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto scrollbar-hide"
-        onClick={handleModalContentClick} // Impede o clique de "borbulhar" para o fundo
+        className="w-full max-w-4xl mx-auto bg-emex-cinza-escuro rounded-lg shadow-2xl modal-backdrop-solid"
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative">
-          <div className="relative w-full aspect-video">
-            <Image
-              src={training.thumbnailUrl}
-              alt={training.title}
-              fill
-              className="object-cover rounded-t-lg"
-            />
-            <button
-              onClick={onClose}
-              // MELHORIA DE UX: Adicionado cursor-pointer
-              className="absolute top-4 right-4 bg-black/60 rounded-full p-2 hover:bg-black/80 transition-colors cursor-pointer"
-              aria-label="Fechar modal"
-            >
-              <X className="h-6 w-6 text-white" />
-            </button>
-          </div>
+        {/* --- Seção Hero (Apenas a Imagem) --- */}
+        <div className="relative w-full aspect-video rounded-t-lg overflow-hidden">
+          <Image
+            src={training.thumbnailUrl}
+            alt={training.title}
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-emex-cinza-escuro/50 to-transparent"></div>
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 bg-black/60 rounded-full p-2 hover:bg-black/80 transition-colors cursor-pointer z-20"
+            aria-label="Fechar modal"
+          >
+            <X className="h-6 w-6 text-white" />
+          </button>
+        </div>
 
-          <div className="p-8 text-center"> {/* Adicionado text-center para alinhar tudo */}
-            <h2 className="text-3xl font-bold mb-4">{training.title}</h2>
-            
-            {/* MELHORIA DE UX: Descrição agora vem antes do botão */}
-            <p className="text-gray-300 text-lg leading-relaxed mb-8">
-              {training.description}
-            </p>
-            
-            {/* BOTÃO COM MUDANÇAS DE UX */}
-            {hasSlug && (
-              <Link href={`/watch/${training.slug}`} passHref>
-                {/* O botão agora é centralizado por padrão */}
-                <button className="flex items-center justify-center mx-auto bg-white text-black font-bold px-8 py-4 rounded hover:bg-gray-200 transition-colors duration-200 cursor-pointer">
-                  <Play className="h-6 w-6 mr-2" />
-                  {/* Texto do botão alterado */}
-                  Iniciar Treinamento
+        {/* --- Nova Seção de Informações (Abaixo da Imagem) --- */}
+        <div className="p-8">
+          <h2 className="text-4xl font-bold text-white">{training.title}</h2>
+          
+          <div className="flex items-center space-x-4 my-4">
+            {firstEpisode && (
+              <Link href={`/watch/${training.slug}?episode=${firstEpisode.episodeNumber}`}>
+                <button className="flex items-center gap-2 bg-white text-black font-bold px-6 py-2 rounded hover:bg-gray-200 transition">
+                  <Play size={24} className="fill-current" />
+                  Assistir
                 </button>
               </Link>
             )}
+            <button className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-gray-400 hover:border-white transition">
+              <Plus size={28} />
+            </button>
+            <button className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-gray-400 hover:border-white transition">
+              <ThumbsUp size={20} />
+            </button>
           </div>
+          
+          <p className="max-w-3xl text-gray-300">
+            {training.description}
+          </p>
         </div>
+
+        {/* --- Seção de Episódios --- */}
+        {training.episodes && training.episodes.length > 0 && (
+          <div className="px-8 pb-8">
+            <h3 className="text-2xl font-bold text-white mb-4 border-t border-gray-700 pt-8">Episódios</h3>
+            <div className="border-t border-gray-700">
+              {training.episodes.map((episode) => (
+                <div key={episode._id} className="border-b border-gray-700">
+                  <EpisodeListItem episode={episode} trainingSlug={training.slug || ''} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );

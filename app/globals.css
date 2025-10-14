@@ -93,3 +93,44 @@ body {
 .banner-vignette {
   background-image: linear-gradient(to top, #141414, rgba(20, 20, 20, 0.7), transparent);
 }
+
+/* --- LÓGICA MANUAL PARA O CARD ESTILO NETFLIX --- */
+
+/* 1. O container que permite a rolagem horizontal */
+.carousel-track {
+  /* Força o container a permitir que os filhos escapem verticalmente! */
+  overflow-y: visible !important;
+}
+
+/* 2. O placeholder invisível que segura o espaço do card na fileira */
+.card-placeholder {
+  position: relative;
+  width: 16rem; /* 256px / w-64 */
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+}
+
+/* 3. O card visível, que será animado */
+.card-content {
+  position: absolute;
+  inset: 0;
+  background-color: #1F1F1F; /* emex-cinza-escuro */
+  border-radius: 0.375rem; /* rounded-md */
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s cubic-bezier(0.5, 0, 0.1, 1);
+}
+
+/* 4. O EFEITO DE HOVER: A Mágica Acontece Aqui */
+.card-placeholder:hover .card-content {
+  /* Aumenta em 50% e sobe 25% da sua própria altura */
+  transform: scale(1.5) translateY(-25%); 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  z-index: 20;
+}
+
+/* Classe manual para o fundo sólido do modal de série */
+.modal-backdrop-solid {
+  background-color: #141414; /* Cor exata do emex-preto */
+}
