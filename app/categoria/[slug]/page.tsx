@@ -1,3 +1,5 @@
+// app/categoria/[slug]/page.tsx
+
 import { client } from '@/lib/sanityClient';
 import type { Category } from '@/types';
 import Navbar from '@/components/Navbar';
@@ -27,9 +29,11 @@ export default async function CategoryPage({ params }: any) {
 
   if (!category) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow flex flex-col justify-center items-center bg-emex-preto text-white">
+      <div className="min-h-screen flex flex-col bg-emex-preto">
+        {/* MUDANÇA AQUI: Adicionada a propriedade isFixed={true} */}
+        <Navbar isFixed={true} />
+        {/* MUDANÇA AQUI: Adicionado padding-top para não ficar sob a navbar */}
+        <main className="flex-grow flex flex-col justify-center items-center text-white pt-24">
           <h1 className="text-3xl font-bold">Categoria não encontrada.</h1>
         </main>
         <Footer />
@@ -39,8 +43,10 @@ export default async function CategoryPage({ params }: any) {
 
   return (
     <div className="bg-secao-conteudo min-h-screen">
-      <Navbar />
+      {/* MUDANÇA AQUI: Adicionada a propriedade isFixed={true} */}
+      <Navbar isFixed={true} />
 
+      {/* O padding 'pt-32' já existente é suficiente para a navbar fixa */}
       <main className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h1 className="text-4xl font-bold text-white mb-8">
@@ -48,7 +54,6 @@ export default async function CategoryPage({ params }: any) {
           </h1>
 
           {category.trainings.length > 0 ? (
-            // Passamos os treinamentos para o componente de cliente
             <CategoryList trainings={category.trainings} />
           ) : (
             <p className="text-gray-400">Não há treinamentos nesta categoria no momento.</p>
