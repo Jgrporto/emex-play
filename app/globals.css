@@ -89,6 +89,10 @@ body {
   color: #00A3E0; /* Cor exata do emex-azul-claro */
 }
 
+.text-link-verde {
+  color: #20B042; /* Cor exata do emex-azul-claro */
+}
+
 /* Classe manual para o efeito de vinheta/degradê do banner */
 .banner-vignette {
   background-image: linear-gradient(to top, #141414, rgba(20, 20, 20, 0.7), transparent);
@@ -133,4 +137,184 @@ body {
 /* Classe manual para o fundo sólido do modal de série */
 .modal-backdrop-solid {
   background-color: #141414; /* Cor exata do emex-preto */
+}
+
+/* Classes manuais para o botão "Mais informações" do card */
+
+/* Estilo da borda azul para o botão */
+.btn-info-borda-azul {
+  border: 2px solid rgba(0, 163, 224, 0.5); /* Cor emex-azul-claro com 50% de transparência */
+  transition: border-color 0.3s ease-in-out;
+}
+
+.btn-info-borda-azul:hover {
+  border-color: #00A3E0; /* Cor emex-azul-claro sólida no hover */
+}
+
+/* Cor verde para o ícone de informação */
+.icon-info-verde {
+  color: #20B042; /* Cor emex-verde */
+}
+
+/* Classes manuais para o efeito de desfoque em degradê das setas */
+
+.arrow-blur-gradient-left {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to left, transparent, black 40%);
+  -webkit-mask-image: linear-gradient(to left, transparent, black 40%);
+}
+
+.arrow-blur-gradient-right {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to right, transparent, black 40%);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 40%);
+}
+
+/* Classes manuais para o degradê das setas do carrossel */
+.carousel-arrow-gradient-left {
+  background-image: linear-gradient(to right, #141414, transparent);
+}
+
+.carousel-arrow-gradient-right {
+  background-image: linear-gradient(to left, #141414, transparent);
+}
+
+/* Animação de linha para os links da Navbar */
+.link-underline {
+  position: relative;
+  text-decoration: none; /* Garante que não haja sublinhado padrão */
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0); /* Começa com a linha invisível (escala 0) */
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #20B042; /* Cor verde que você quer - usando o código hexadecimal direto */
+  transform-origin: bottom left; /* A animação começa da esquerda para a direita */
+  transition: transform 0.3s ease-out; /* A animação suave */
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1); /* No hover, a linha cresce para 100% da largura */
+  transform-origin: bottom left;
+}
+
+.link-underline-active {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-underline-active::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(1); /* Linha já começa 100% visível */
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #00BFFF; /* Cor AZUL que você usava (emex-azul-claro) */
+}
+
+.back-link-icon-hover svg {
+  /* Adiciona uma transição suave para a mudança de cor do ícone */
+  transition: color 0.2s ease-in-out;
+}
+
+.back-link-icon-hover:hover svg {
+  /* Quando o mouse está sobre o link, muda a cor do ícone para verde */
+  color: #00FF7F; /* Usando o código hexadecimal direto para garantir */
+}
+
+/* --- NOVOS ESTILOS MANUAIS PARA OS BOTÕES DE AÇÃO --- */
+
+/* Base para TODOS os botões de ícone */
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem; /* p-2 */
+  border: 1px solid #374151; /* border-gray-700 */
+  border-radius: 0.375rem; /* rounded-md */
+  background-color: transparent; /* bg-gray-800/50 */
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out; /* A transição agora é só na borda */
+}
+.action-button svg {
+  color: #FFFFFF; /* Ícone sempre branco por padrão */
+  transition: color 0.2s ease-in-out; /* Adiciona transição à cor do ícone */
+}
+
+/* 1. Botões de Navegação (Setas) */
+.btn-nav:hover {
+  border-color: #00BFFF; /* Apenas a borda fica azul */
+}
+.btn-nav:hover svg {
+  color: #00BFFF; /* Apenas o ícone fica azul */
+}
+
+/* 2. Botão de Concluir */
+.btn-complete {
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+/* Hover no estado padrão (borda e texto/ícone mudam) */
+.btn-complete[data-state='default']:hover {
+  border-color: #00B359;
+  color: #00B359;
+}
+.btn-complete[data-state='default']:hover svg {
+  color: #00B359;
+}
+/* Estado de carregamento (sem mudança) */
+.btn-complete[data-state='loading'] {
+  background-color: #4B5563;
+  border-color: #4B5563;
+  cursor: wait;
+}
+/* Estado concluído (fundo muda para confirmação) */
+.btn-complete[data-state='completed'] {
+  background-color: rgba(0, 255, 127, 0.8);
+  border-color: rgba(0, 255, 127, 0.8);
+  color: #FFFFFF;
+  cursor: not-allowed;
+}
+.btn-complete[data-state='completed'] svg {
+  color: #FFFFFF;
+}
+
+
+/* 3. Botão Favoritar (Coração) */
+.btn-favorite:hover,
+.btn-favorite[data-state='active'] {
+  border-color: #FF0040; /* Apenas a borda fica vermelha */
+}
+.btn-favorite:hover svg,
+.btn-favorite[data-state='active'] svg {
+  color: #FF0040; /* Apenas o ícone fica vermelho */
+}
+
+/* 4. Botão Gostei (Like) */
+.btn-like:hover,
+.btn-like[data-state='active'] {
+  border-color: #00FF7F; /* Apenas a borda fica verde */
+}
+.btn-like:hover svg,
+.btn-like[data-state='active'] svg {
+  color: #00FF7F; /* Apenas o ícone fica verde */
+}
+
+/* 5. Botão Não Gostei (Dislike) */
+.btn-dislike:hover,
+.btn-dislike[data-state='active'] {
+  border-color: #FF8C00; /* Apenas a borda fica laranja */
+}
+.btn-dislike:hover svg,
+.btn-dislike[data-state='active'] svg {
+  color: #FF8C00; /* Apenas o ícone fica laranja */
 }

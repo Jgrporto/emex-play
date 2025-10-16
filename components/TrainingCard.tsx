@@ -43,12 +43,14 @@ export default function TrainingCard({ training, onInfoClick }: TrainingCardProp
         {/* Botão de informações */}
         <button
           onClick={() => onInfoClick(training)}
-          // ALTERAÇÃO: Aumentamos o texto, o padding e o ícone
+          // --- ALTERAÇÃO AQUI ---
           className="flex items-center justify-center gap-2 
-                     bg-white/10 text-white text-sm font-medium
-                     px-4 py-2 rounded-lg hover:bg-white/20 transition cursor-pointer"
+                     text-white text-sm font-medium
+                     px-3 py-1 rounded-full transition-colors cursor-pointer
+                     btn-info-borda-azul" // Substituímos as classes de borda
         >
-          <Info size={16} /> {/* Ícone aumentado */}
+          {/* --- E ALTERAÇÃO AQUI --- */}
+          <Info size={20} className="icon-info-verde" /> {/* Adicionamos a classe do ícone */}
           Mais informações
         </button>
       </div>

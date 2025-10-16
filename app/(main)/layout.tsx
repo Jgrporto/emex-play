@@ -6,29 +6,24 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { usePathname } from 'next/navigation';
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MainLayout({ children }: { children: React.ReactNode; }) {
   const pathname = usePathname();
-  
-  // Lista de páginas que têm um banner full-bleed e NÃO devem ter padding no topo.
-  const fullBleedPages = ['/', '/treinamentos'];
 
-  // A página de vídeo não tem navbar fixa, então também não precisa de padding.
-  const isWatchPage = pathname.startsWith('/watch/');
+  // A regra para a Navbar ser fixa continua a mesma: em todas as páginas, exceto na de vídeo.
+  const isNavbarFixed = !pathname.startsWith('/watch/');
 
-  // A condição agora é: só adiciona padding se a página NÃO for full-bleed E NÃO for a de vídeo.
-  const needsTopPadding = !fullBleedPages.includes(pathname) && !isWatchPage;
+  // NOVA REGRA PARA O PADDING:
+  // O padding só é necessário se a Navbar for fixa E a página NÃO for a inicial.
 
   return (
     <div className="flex flex-col min-h-screen bg-emex-preto">
-      <Navbar />
-      {/* A classe 'pt-24' agora é aplicada condicionalmente */}
-      <main className={`flex-grow ${needsTopPadding ? 'pt-24' : ''}`}>
+      <Navbar isFixed={isNavbarFixed} />
+      
+      {/* O padding 'pt-24' agora respeita a nova regra, deixando a home page sem padding */}
+      <main className={`flex-grow: ''}`}>
         {children}
       </main>
+      
       <Footer />
     </div>
   );

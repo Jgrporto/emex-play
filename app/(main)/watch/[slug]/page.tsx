@@ -1,116 +1,133 @@
 // app/(main)/watch/[slug]/page.tsx
 
-import { client } from '@/lib/sanityClient';
-import { urlFor } from '@/lib/sanityImageUrl';
-import { notFound } from 'next/navigation';
+'use client'; 
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { PlayCircle } from 'lucide-react';
 import type { Training, Episode } from '@/types';
+import { client } from '@/lib/sanityClient';
+import { useParams, useSearchParams } from 'next/navigation';
 
-interface WatchPageData {
-  series: Training | null;
-  episodes: Episode[];
-}
+// Componentes
+import { VideoPlayer } from './_components/VideoPlayer';
+import { EpisodeSidebar } from './_components/EpisodeSidebar';
+import { ActionBar } from './_components/ActionBar';
+import { ChevronLeft } from 'lucide-react';
+import LikeModal from './_components/LikeModal';
+import DislikeModal from './_components/DislikeModal';
 
-async function getData(slug: string): Promise<WatchPageData> {
+async function getData(slug: string): Promise<{ series: Training | null; episodes: Episode[] }> {
   const query = `*[_type == "training" && slug.current == $slug][0]{
-    _id,
-    title,
-    "slug": slug.current,
+    _id, title, "slug": slug.current, "category": category->{name, "slug": slug.current},
     "episodes": episodes[]->{
-      _id,
-      title,
-      episodeNumber,
-      description,
-      "thumbnail": thumbnail{asset->},
-      youtubeVideoId
+      _id, title, episodeNumber, description, "thumbnail": thumbnail{asset->}, youtubeVideoId
     } | order(episodeNumber asc)
   }`;
-
   const seriesData = await client.fetch(query, { slug });
-
-  if (!seriesData) {
-    return { series: null, episodes: [] };
-  }
-
-  return {
-    series: seriesData,
-    episodes: seriesData.episodes || [],
-  };
+  return { series: seriesData, episodes: seriesData?.episodes || [] };
 }
 
-// Usamos 'any' para as props para contornar o bug de tipo da versão experimental do Next.js
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function WatchPage({ params, searchParams }: any) {
-  const { series, episodes } = await getData(params.slug);
+// 2. REMOVA 'searchParams' DAS PROPS
+export default function WatchPage() {
+  const params = useParams();
+  const searchParams = useSearchParams(); // <-- 3. USE O HOOK PARA OBTER OS PARÂMETROS DE BUSCA
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
-  if (!series || episodes.length === 0) {
-    notFound();
+  const [series, setSeries] = useState<Training | null>(null);
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [isLikeModalOpen, setLikeModalOpen] = useState(false);
+  const [isDeslikeModalOpen, setDeslikeModalOpen] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [hasLiked, setHasLiked] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (slug) {
+      const fetchData = async () => {
+        setIsLoadingData(true);
+        const { series: fetchedSeries, episodes: fetchedEpisodes } = await getData(slug);
+        setSeries(fetchedSeries);
+        setEpisodes(fetchedEpisodes);
+        setIsLoadingData(false);
+      };
+      fetchData();
+    }
+  }, [slug]);
+
+  const handleOpenLikeModal = () => { setHasLiked(p => p === true ? null : true); setLikeModalOpen(true); };
+  const handleOpenDeslikeModal = () => { setHasLiked(p => p === false ? null : false); setDeslikeModalOpen(true); };
+
+  if (isLoadingData) {
+    return <div className="flex justify-center items-center h-screen text-white">Carregando treinamento...</div>;
   }
 
-  // Lógica para encontrar o episódio correto para tocar
-  const currentEpisodeNumber = parseInt(searchParams.episode || '1', 10);
+  if (!series || episodes.length === 0) {
+    return <div className="flex justify-center items-center h-screen text-white">Treinamento não encontrado.</div>;
+  }
+
+  // 4. ACESSE O PARÂMETRO COM O MÉTODO .get()
+  const episodeParam = searchParams.get('episode');
+  const currentEpisodeNumber = parseInt(episodeParam || '1', 10);
+  
   const episodeToPlay = episodes.find(ep => ep.episodeNumber === currentEpisodeNumber) || episodes[0];
+  const nextEpisode = episodes.find(ep => ep.episodeNumber === currentEpisodeNumber + 1);
+  const prevEpisode = episodes.find(ep => ep.episodeNumber === currentEpisodeNumber - 1);
 
+  if (!episodeToPlay) {
+     return <div className="flex justify-center items-center h-screen text-white">Episódio não encontrado.</div>;
+  }
+  
   return (
-    <main className="bg-emex-preto text-white">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          
-          <div className="w-full lg:w-2/3">
-            <div className="aspect-video mb-6 bg-black rounded-lg overflow-hidden">
-              <iframe
-                width="100%"
-                height="100%"
-                // AQUI USAMOS O 'youtubeVideoId' DO EPISÓDIO
-                src={`https://www.youtube.com/embed/${episodeToPlay.youtubeVideoId}?autoplay=1&rel=0&modestbranding=1`}
-                title={episodeToPlay.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-            
-            <h1 className="text-3xl font-bold mb-2">{series.title}</h1>
-            <h2 className="text-xl text-gray-300 font-semibold mb-4">
-              E{episodeToPlay.episodeNumber}: {episodeToPlay.title}
-            </h2>
-            <p className="text-gray-400">
-              {episodeToPlay.description}
-            </p>
-          </div>
-
-          {/* Lista de Próximos Episódios */}
-          <div className="w-full lg:w-1/3">
-            <h3 className="text-2xl font-bold mb-4">Próximos Episódios</h3>
-            <div className="space-y-4 max-h-[80vh] overflow-y-auto scrollbar-hide">
-              {episodes.map(ep => (
-                <Link key={ep._id} href={`/watch/${series.slug}?episode=${ep.episodeNumber}`}>
-                  <div className={`flex items-start gap-4 p-3 rounded-lg transition-colors ${ep._id === episodeToPlay._id ? 'bg-emex-cinza-escuro' : 'hover:bg-white/5'}`}>
-                    <div className="relative w-32 h-20 flex-shrink-0 rounded-md overflow-hidden group">
-                      <Image
-                        src={urlFor(ep.thumbnail).width(320).height(180).url()}
-                        alt={ep.title}
-                        fill
-                        className="object-cover"
-                        sizes="128px"
-                      />
-                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <PlayCircle size={28} className="text-white/80" />
-                      </div>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white">E{ep.episodeNumber}: {ep.title}</h4>
-                      <p className="text-sm text-gray-400 line-clamp-2 mt-1">{ep.description}</p>
-                    </div>
-                  </div>
+    <>
+      <main className="bg-emex-preto text-white">
+        <div className="px-4 sm:px-6 lg:px-8 py-6">
+            <div className="px-4 sm:px-6 lg:px-8">
+                 <Link href={`/category/${series.category?.slug || ''}`} className="back-link-icon-hover inline-flex items-center gap-1 text-sm text-gray-400">
+                    <ChevronLeft size={18} />
+                    <span>Voltar para {series.category?.name || 'Categoria'}</span>
                 </Link>
-              ))}
+            </div>
+          
+          {/* --- ESTRUTURA CORRIGIDA --- */}
+          {/* A classe 'gap-8' cria um espaço saudável entre as colunas */}
+          <div className="flex flex-col lg:flex-row gap-8">
+            
+            {/* Coluna Esquerda: Player e Ações */}
+            {/* Ocupa 3/4 da largura em telas grandes */}
+            <div className="px-4 sm:px-6 lg:px-8 py-1 w-full lg:w-2/3">
+              <VideoPlayer episode={episodeToPlay} />
+              <ActionBar
+                episode={episodeToPlay}
+                seriesSlug={series.slug!}
+                prevEpisode={prevEpisode}
+                nextEpisode={nextEpisode}
+                isFavorited={isFavorited}
+                hasLiked={hasLiked}
+                onFavorite={() => setIsFavorited(p => !p)}
+                onOpenLikeModal={handleOpenLikeModal}
+                onOpenDeslikeModal={handleOpenDeslikeModal}
+              />
+              <h1 className="text-3xl font-bold mb-2">{episodeToPlay.title}</h1>
+              <p className="text-gray-400">{episodeToPlay.description}</p>
+            </div>
+
+            {/* Coluna Direita: Sidebar de Episódios */}
+            {/* Ocupa 1/4 da largura em telas grandes, garantindo que não seja achatada */}
+            <div className="w-full lg:w-1/3">
+              <EpisodeSidebar
+                seriesTitle={series.title}
+                episodes={episodes}
+                currentEpisodeId={episodeToPlay._id}
+                seriesSlug={series.slug!}
+              />
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+
+      {/* Renderização condicional dos seus modais */}
+      {isLikeModalOpen && <LikeModal onClose={() => setLikeModalOpen(false)} trainingSlug={series.slug!} />}
+      {isDeslikeModalOpen && <DislikeModal onClose={() => setDeslikeModalOpen(false)} trainingSlug={series.slug!} />}
+    </>
   );
 }

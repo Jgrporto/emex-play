@@ -34,7 +34,6 @@ export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps)
         className="h-full w-full overflow-hidden"
       >
         {banners.map((banner) => {
-          // Lógica para criar o estilo do Hotspot
           const imageStyle = banner.imagem?.hotspot
             ? { objectPosition: `${banner.imagem.hotspot.x * 100}% ${banner.imagem.hotspot.y * 100}%` }
             : { objectPosition: 'center' };
@@ -49,11 +48,13 @@ export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps)
                   priority
                   quality={100}
                   sizes="100vw"
-                  className="object-cover w-full h-full scale-100"
-                  // Estilo dinâmico aplicado para o enquadramento correto
+                  className="object-cover"
                   style={imageStyle} 
                 />
-                inset-0 bg-gradient-to-r from-black/80 via-bla <div className="absoluteck/50 to-transparent p-8 sm:p-12 flex flex-col justify-center items-start z-20">
+                
+                {/* --- A CORREÇÃO ESTÁ AQUI --- */}
+                {/* Esta div foi reconstruída para ter a sintaxe correta */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent p-8 sm:p-12 flex flex-col justify-center items-start z-20">
                   <h2 className="text-3xl sm:text-4xl font-bold text-white max-w-md">
                     {banner.titulo}
                   </h2>
@@ -78,7 +79,7 @@ export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps)
         })}
       </Swiper>
 
-       <div className="absolute bottom-0 left-0 w-full h-32 banner-vignette z-5 pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-full h-32 banner-vignette z-5 pointer-events-none"></div>
 
       <div className="swiper-button-prev-hero absolute top-1/2 left-0 -translate-y-1/2 z-20 h-full w-24 flex items-center justify-start cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="absolute inset-0 bg-gradient-to-r from-emex-preto/70 to-transparent"></div>

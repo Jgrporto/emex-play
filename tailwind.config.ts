@@ -26,6 +26,10 @@ module.exports = {
         'secao-apresentacao': '#141414',
         'secao-conteudo': '#181717',
         'modal-conteudo': '#1F1F1F',
+        'emex-verde-escuro': '#00B359', // Verde para o hover do concluir (mais escuro)
+        'emex-vermelho': '#FF0040', // Vermelho para coração
+        
+        
       },
       scale: {
         '108': '1.08', // Manter se ainda for útil para a imagem

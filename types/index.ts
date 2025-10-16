@@ -21,6 +21,7 @@ export type Training = {
   thumbnailUrl: string;
   description?: string;
   fullTitle?: string;
+  category?: Category;
   tag?: string;
   numeroDeTreinamentos?: string;
   episodes?: Episode[];
@@ -37,6 +38,7 @@ export type Category = {
   _id: string;
   title: string;
   slug: { current: string };
+  name: string;
   trainings: Training[];
 };
 

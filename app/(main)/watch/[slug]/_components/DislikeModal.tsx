@@ -1,12 +1,21 @@
 "use client";
 
 import { X, Frown } from 'lucide-react';
+import { useRouter } from 'next/navigation'; // 1. Importe o useRouter
 
 type DislikeModalProps = {
   onClose: () => void;
+  trainingSlug: string; // 2. Adicione uma prop para receber o slug do treinamento
 };
 
-export default function DislikeModal({ onClose }: DislikeModalProps) {
+export default function DislikeModal({ onClose, trainingSlug }: DislikeModalProps) {
+  const router = useRouter(); // 3. Inicialize o router
+
+  const handleNavigateToFeedback = () => {
+    // 4. Navega para a página de avaliação, passando o slug
+    router.push(`/feedback/${trainingSlug}`); 
+  };
+
   return (
     <div 
       onClick={onClose} 
@@ -22,7 +31,11 @@ export default function DislikeModal({ onClose }: DislikeModalProps) {
         <Frown size={48} className="mx-auto text-emex-laranja mb-4" />
         <h2 className="text-2xl font-bold text-white mb-2">Poxa, que pena!</h2>
         <p className="text-gray-300 mb-6">Seu feedback é muito importante para melhorarmos. Por que você não gostou deste treinamento?</p>
-        <button className="w-full bg-emex-laranja text-white font-bold py-3 rounded hover:brightness-110 transition-all duration-300">
+        {/* 5. Adicione a função de navegação ao botão */}
+        <button 
+          onClick={handleNavigateToFeedback}
+          className="w-full bg-emex-laranja text-white font-bold py-3 rounded hover:brightness-110 transition-all duration-300"
+        >
           Responder à Avaliação
         </button>
       </div>
