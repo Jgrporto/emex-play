@@ -33,7 +33,6 @@ export default function HeroCarousel({ trainings }: HeroCarouselProps) {
     return () => clearInterval(slideInterval);
   }, [currentIndex, nextSlide]);
 
-
   if (!trainings || trainings.length === 0) {
     return null;
   }
@@ -50,12 +49,20 @@ export default function HeroCarousel({ trainings }: HeroCarouselProps) {
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <Image
-            src={training.thumbnailUrl}
-            alt={training.title}
-            fill
-            className="object-cover"
-          />
+          {/* --- CORREÇÃO AQUI --- */}
+          {/* Adicionada a verificação para garantir que a thumbnailUrl exista */}
+          {training.thumbnailUrl ? (
+            <Image
+              src={training.thumbnailUrl}
+              alt={training.title}
+              fill
+              className="object-cover"
+              priority={index === 0} // Otimização: carrega a primeira imagem com prioridade
+            />
+          ) : (
+            // Placeholder caso não haja imagem
+            <div className="w-full h-full bg-emex-cinza-escuro"></div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
         </div>
       ))}
@@ -68,9 +75,11 @@ export default function HeroCarousel({ trainings }: HeroCarouselProps) {
             <p className="text-lg text-gray-200 mt-4 drop-shadow-lg max-w-lg">
               {currentTraining.description}
             </p>
-            <Link href={`/watch/${currentTraining._id}`} passHref>
+            {/* --- CORREÇÃO AQUI --- */}
+            {/* O link agora usa o 'slug.current' para a URL */}
+            <Link href={`/watch/${currentTraining.slug.current}`} passHref>
               <button className="flex items-center mt-8 bg-emex-verde text-white font-bold px-6 py-3 rounded transition-all duration-300 cursor-pointer btn-hover-container">
-                <Play className="h-6 w-6 mr-2 text-white icon-hover-scale" />
+                <Play className="h-6 w-6 mr-2 text-white icon-hover-scale" fill="currentColor"/>
                 Assistir Agora
               </button>
             </Link>
