@@ -32,7 +32,7 @@ export default function TrainingList({ categories }: { categories: Category[] })
               <TrainingCarousel
                 key={category._id}
                 title={category.title}
-                slug={category.slug.current}
+                slug={category.slug}
                 trainings={category.trainings}
                 onInfoClick={setSelectedTraining}
               />

@@ -9,7 +9,9 @@ import { useEffect } from 'react';
 
 type TrainingCarouselProps = {
   title: string;
-  slug: { current: string };
+  // --- CORREÇÃO 1: A prop 'slug' agora é tipada para ser um objeto ---
+  // Isso faz com que o componente espere a estrutura de dados correta.
+  slug: { current: string }; 
   trainings: Training[];
   onInfoClick: (training: Training) => void;
 };
