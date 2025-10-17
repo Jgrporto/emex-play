@@ -6,11 +6,12 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TrainingGridCard from '@/components/TrainingGridCard';
 
-// --- CORREÇÃO 1: Criado um 'type' dedicado para as props da página ---
-type CategoryPageProps = {
-  params: {
-    slug: string;
-  };
+// --- CORREÇÃO AQUI ---
+// Criamos um 'type' dedicado e completo para as props da página,
+// incluindo 'searchParams' para satisfazer o build da Vercel.
+type Props = {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 async function getData(slug: string) {
@@ -25,8 +26,8 @@ async function getData(slug: string) {
   return data;
 }
 
-// --- CORREÇÃO 2: A função agora usa o novo tipo 'CategoryPageProps' ---
-export default async function CategoryPage({ params }: CategoryPageProps) {
+// A função agora usa o novo tipo 'Props'
+export default async function CategoryPage({ params }: Props) {
   const category: (Category & { trainings: Training[] }) | null = await getData(params.slug);
 
   if (!category) {
@@ -40,7 +41,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </div>
     );
   }
-
+  
   return (
     <div className="bg-emex-preto min-h-screen">
       <Navbar isFixed={true} />
