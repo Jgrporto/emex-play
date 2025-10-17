@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 
 type TrainingCarouselProps = {
   title: string;
-  slug: string; 
+  slug: { current: string };
   trainings: Training[];
   onInfoClick: (training: Training) => void;
 };

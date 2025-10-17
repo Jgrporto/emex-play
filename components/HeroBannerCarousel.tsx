@@ -17,7 +17,7 @@ type HeroBannerCarouselProps = {
 
 export default function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
   return (
-    <div className="relative w-full h-[60vh] lg:h-[70vh] group z-10">
+    <div className="relative w-full h-[60vh] lg:h-[80vh] group z-10">
       <Swiper
         modules={[Navigation, Autoplay, EffectFade]}
         navigation={{

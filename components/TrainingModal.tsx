@@ -1,103 +1,83 @@
-"use client";
+// components/TrainingModal.tsx
 
+'use client';
+
+import type { Training, Episode } from '@/types';
 import Image from 'next/image';
+import { X, Play, Plus, ThumbsUp, ThumbsDown } from 'lucide-react';
 import Link from 'next/link';
-import { X, Play, Plus, ThumbsUp } from 'lucide-react';
-import type { Training } from '@/types';
-import EpisodeListItem from './EpisodeListItem';
-import { useEffect } from 'react';
 
-type TrainingModalProps = {
-  training: Training | null;
+interface TrainingModalProps {
+  training: Training;
   onClose: () => void;
-};
+}
 
-export default function TrainingModal({ training, onClose }: TrainingModalProps) {
-  
-  // Lógica para travar a rolagem da página principal
-  useEffect(() => {
-    // Quando o modal abre, adiciona uma classe ao body que desativa o scroll
-    document.body.classList.add('overflow-hidden');
-
-    // Função de limpeza: será executada quando o modal fechar
-    return () => {
-      // Remove a classe para reativar o scroll
-      document.body.classList.remove('overflow-hidden');
-    };
-  }, []); // O array vazio garante que isso rode apenas uma vez (ao abrir e fechar)
-
-  if (!training) return null;
-
-  const firstEpisode = training.episodes?.[0];
+// Pequeno componente para a linha do episódio
+function EpisodeRow({ episode }: { episode: Episode }) {
+  if (!episode.thumbnail?.asset?.url) return null; // Segurança
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/90 z-50 p-4 sm:p-8 overflow-y-auto"
-      onClick={onClose}
-    >
-      <div 
-        className="w-full max-w-4xl mx-auto bg-emex-cinza-escuro rounded-lg shadow-2xl modal-backdrop-solid"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* --- Seção Hero (Apenas a Imagem) --- */}
-        <div className="relative w-full aspect-video rounded-t-lg overflow-hidden">
-          <Image
-            src={training.thumbnailUrl}
-            alt={training.title}
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-emex-cinza-escuro/50 to-transparent"></div>
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 bg-black/60 rounded-full p-2 hover:bg-black/80 transition-colors cursor-pointer z-20"
-            aria-label="Fechar modal"
-          >
-            <X className="h-6 w-6 text-white" />
-          </button>
-        </div>
+    <div className="episode-item">
+      <div className="thumbnail">
+        <Image src={episode.thumbnail.asset.url} alt={episode.title} fill className="object-cover" />
+      </div>
+      <div className="details">
+        <h3 className="title">{episode.title}</h3>
+        <p className="description">{episode.description}</p>
+      </div>
+    </div>
+  );
+}
 
-        {/* --- Nova Seção de Informações (Abaixo da Imagem) --- */}
-        <div className="p-8">
-          <h2 className="text-4xl font-bold text-white">{training.title}</h2>
-          
-          <div className="flex items-center space-x-4 my-4">
-            {firstEpisode && (
-              <Link href={`/watch/${training.slug}?episode=${firstEpisode.episodeNumber}`}>
-                <button className="flex items-center gap-2 bg-white text-black font-bold px-6 py-2 rounded hover:bg-gray-200 transition">
-                  <Play size={24} className="fill-current" />
-                  Assistir
-                </button>
+export default function TrainingModal({ training, onClose }: TrainingModalProps) {
+  // Verificação de segurança
+  if (!training) return null;
+
+  return (
+    <div className="training-modal-overlay" onClick={onClose}>
+      <div className="training-modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="action-button modal-close-button" onClick={onClose}>
+          <X size={20} />
+        </button>
+
+        {/* --- SEÇÃO DO BANNER --- */}
+        <div className="modal-banner">
+          {training.thumbnailUrl && (
+            <Image
+              src={training.thumbnailUrl}
+              alt={`Banner de ${training.title}`}
+              fill
+              className="modal-banner-image"
+              priority
+            />
+          )}
+          <div className="modal-banner-overlay"></div>
+          <div className="modal-banner-content">
+            <h1 className="modal-title">{training.title}</h1>
+            <div className="modal-actions">
+              <Link href={`/watch/${training.slug.current}`} className="modal-play-button">
+                <Play size={20} fill="currentColor" />
+                <span>Iniciar</span>
               </Link>
-            )}
-            <button className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-gray-400 hover:border-white transition">
-              <Plus size={28} />
-            </button>
-            <button className="w-11 h-11 flex items-center justify-center rounded-full border-2 border-gray-400 hover:border-white transition">
-              <ThumbsUp size={20} />
-            </button>
+              <button className="action-button btn-favorite"><Plus size={20} /></button>
+              <button className="action-button btn-like"><ThumbsUp size={20} /></button>
+              <button className="action-button btn-dislike"><ThumbsDown size={20} /></button>
+            </div>
+            <p className="modal-description">{training.description}</p>
           </div>
-          
-          <p className="max-w-3xl text-gray-300">
-            {training.description}
-          </p>
         </div>
 
-        {/* --- Seção de Episódios --- */}
+        {/* --- SEÇÃO DA LISTA DE EPISÓDIOS --- */}
         {training.episodes && training.episodes.length > 0 && (
-          <div className="px-8 pb-8">
-            <h3 className="text-2xl font-bold text-white mb-4 border-t border-gray-700 pt-8">Episódios</h3>
-            <div className="border-t border-gray-700">
+          <div className="modal-content-body">
+            <h2 className="episodes-title">Episódios ({training.episodes.length})</h2>
+            <div className="episodes-list">
               {training.episodes.map((episode) => (
-                <div key={episode._id} className="border-b border-gray-700">
-                  <EpisodeListItem episode={episode} trainingSlug={training.slug || ''} />
-                </div>
+                <EpisodeRow key={episode._id} episode={episode} />
               ))}
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

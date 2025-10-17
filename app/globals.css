@@ -318,3 +318,539 @@ body {
 .btn-dislike[data-state='active'] svg {
   color: #FF8C00; /* Apenas o ícone fica laranja */
 }
+
+/* Efeito de hover manual para os ícones da Navbar */
+.navbar-icon-hover {
+  /* Define a cor base para o ícone */
+  color: #FFFFFF; /* white */
+  transition: color 0.2s ease-in-out;
+}
+
+/* No hover, muda a cor do SVG (ícone) para azul */
+.navbar-icon-hover:hover {
+  color: #00BFFF; /* emex-azul-claro */
+}
+
+/* Efeito de anel para a imagem do avatar */
+.navbar-avatar-hover img {
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.navbar-avatar-hover:hover img {
+  box-shadow: 0 0 0 2px #00BFFF; /* Cria um anel azul de 2px */
+}
+
+/* Efeito de hover para os cards de categoria */
+.category-card-hover {
+  position: relative;
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.category-card-hover:hover {
+  transform: translateY(-8px); /* Eleva o card sutilmente */
+  box-shadow: 0 10px 30px rgba(0, 191, 255, 0.2); /* Adiciona um brilho azul */
+}
+
+/* ===============================
+   CARD DE TREINAMENTO (GRID)
+   =============================== */
+
+.training-grid-card {
+  position: relative; /* Essencial para o posicionamento dos filhos */
+  display: block;
+  aspect-ratio: 16 / 9; /* Força a proporção de vídeo */
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.training-grid-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+}
+/* ===============================
+   THUMBNAIL
+   =============================== */
+.card-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Camada de baixo */
+}
+
+.card-thumbnail img {
+  transition: transform 0.25s ease, filter 0.35s ease; /* Adicione 'filter' na transição */
+}
+
+.training-grid-card:hover .card-thumbnail img {
+  transform: scale(1.05);
+  filter: brightness(0.1); /* <-- ADICIONE ESTA LINHA */
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80%; /* Altura do gradiente */
+  z-index: 2; /* Fica entre a imagem e o conteúdo */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+  transition: background 0.3s ease;
+}
+
+.training-grid-card:hover .card-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+}
+/* ===============================
+   CONTEÚDO
+   =============================== */
+.card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3; /* Camada de cima */
+  padding: 1.25rem;
+  /* Efeito de slide para o conteúdo */
+  transform: translateY(calc(100% - 4.5rem)); /* Esconde tudo exceto o título */
+  transition: transform 0.3s ease-in-out;
+}
+
+.training-grid-card:hover .card-content {
+  transform: translateY(0); /* Revela todo o conteúdo no hover */
+}
+
+.card-title {
+  font-size: 1.25rem; /* Aumentado para mais destaque */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.card-description,
+.card-cta {
+  /* Inicialmente invisíveis, aparecem no hover */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out 0.1s; /* Pequeno delay na transição */
+}
+
+.training-grid-card:hover .card-description,
+.training-grid-card:hover .card-cta {
+  opacity: 1;
+}
+
+.training-grid-card:hover .card-title {
+  color: #0ea5e9;
+}
+
+/* ===============================
+   METADADOS
+   =============================== */
+
+.meta-item svg {
+  color: #0ea5e9;
+}
+
+/* ===============================
+   DESCRIÇÃO
+   =============================== */
+.card-description {
+  color: #a3a3a3;
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.4;
+  max-height: 4.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===============================
+   BOTÃO / CTA
+   =============================== */
+.card-cta {
+  display: inline-flex; /* Para que não ocupe a largura toda */
+  background: #0ea5e9;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.card-cta:hover {
+  background: #0ea5e9; /* Fundo azul no hover */
+  color: #fff; /* Texto branco no hover */
+}
+/* ===============================
+   ESTILOS GERAIS DE FUNDO
+   =============================== */
+.bg-emex-preto {
+  background: linear-gradient(180deg, #0c0c0c 0%, #1a1a1a 100%);
+  color: #fff;
+}
+
+
+/* ===============================
+   CABEÇALHO DA CATEGORIA
+   =============================== */
+.category-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.category-page-header .title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  position: relative;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+.category-page-header .title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  border-radius: 4px;
+}
+
+.category-page-header .count {
+  background: rgba(255,255,255,0.08);
+  color: #b3b3b3;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+}
+
+/* ===============================
+   GRID DE TREINAMENTOS
+   =============================== */
+.training-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.75rem;
+  align-items: start;
+}
+
+/* ===============================
+   CARD DE TREINAMENTO
+   =============================== */
+.training-grid-card {
+  display: flex;
+  flex-direction: column;
+  background: #121212;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+.training-grid-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+
+/* Thumbnail */
+.card-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background: #1b1b1b;
+}
+
+.card-thumbnail img {
+  border-bottom: 2px solid #0ea5e9;
+  transition: transform 0.4s ease;
+}
+
+.training-grid-card:hover .card-thumbnail img {
+  transform: scale(1.05);
+}
+
+/* Conteúdo */
+.card-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  background-color: transparent;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+  transition: color 0.2s;
+}
+
+.training-grid-card:hover .card-title {
+  color: #0ea5e9;
+}
+
+/* Metadados */
+.card-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #b3b3b3;
+}
+
+.meta-item svg {
+  color: #0ea5e9;
+}
+
+/* Descrição */
+.card-description {
+  color: #a3a3a3;
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.4;
+  max-height: 4.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* CTA */
+.card-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0ea5e9;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.card-cta:hover {
+  background: #0284c7;
+}
+
+/* ===============================
+   ESTADO VAZIO
+   =============================== */
+.text-gray-400 {
+  color: #9ca3af !important;
+}
+
+/* app/globals.css */
+
+/* --- ESTILO PARA O TÍTULO DA CATEGORIA COM LINHA AZUL --- */
+
+.category-title-underline {
+  position: relative; /* Necessário para posicionar a linha em relação ao texto */
+  padding-bottom: 0.75rem; /* 12px - Cria um espaço para a linha não ficar colada */
+}
+
+/* A linha azul decorativa */
+.category-title-underline::after {
+  content: ''; /* Pseudo-elementos precisam de 'content' */
+  position: absolute;
+  bottom: 0; /* Posiciona a linha na base do elemento (respeitando o padding) */
+  left: 0; /* Alinha a linha à esquerda */
+  width: 50%; /* A linha terá metade da largura do título */
+  height: 4px; /* Uma linha "grande" e visível */
+  background: linear-gradient(90deg, #00c6ff, #0072ff); /* O mesmo gradiente azul que já usamos */
+  border-radius: 4px; /* Deixa as pontas da linha arredondadas */
+}
+
+/* app/globals.css */
+
+/* --- NOVOS ESTILOS PARA O MODAL DE INFORMAÇÕES --- */
+
+/* Overlay de fundo */
+.training-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Container principal do modal */
+.training-modal-content {
+  background-color: #121212; /* Cor de fundo principal */
+  border-radius: 12px;
+  width: 100%;
+  max-width: 56rem; /* 896px - Um modal largo e imersivo */
+  max-height: 90vh; /* Limita a altura e permite scroll */
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.training-modal-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+/* Seção do Banner Superior */
+.modal-banner {
+  position: relative;
+  width: 100%;
+  height: 50vh; /* Ocupa metade da altura da tela */
+  min-height: 400px;
+}
+.modal-banner-image {
+  object-fit: cover;
+}
+.modal-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #121212 10%, rgba(18, 18, 18, 0) 100%);
+}
+.modal-banner-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 2.5rem;
+}
+
+.modal-title {
+  font-size: 2.5rem; /* 40px */
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* gap-3 */
+  margin-bottom: 1rem;
+}
+.modal-description {
+  color: #D4D4D4;
+  font-size: 1rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Botão de Iniciar Principal */
+.modal-play-button {
+  background-color: #FFFFFF;
+  color: #121212;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s ease;
+}
+.modal-play-button:hover {
+  transform: scale(1.05);
+}
+
+/* Botão de Fechar */
+.modal-close-button {
+  position: absolute;
+  top: 2.5rem;
+  right: 2rem;
+  z-index: 10;
+  background-color: rgba(18, 18, 18, 0.7);
+  border-radius: 9999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  transition: transform 0.2s ease;
+}
+.modal-close-button:hover {
+  transform: scale(1.1);
+}
+
+/* Corpo do conteúdo (Lista de Episódios) */
+.modal-content-body {
+  padding: 1rem 2.5rem 2rem;
+}
+.episodes-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+.episodes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background-color: #262626; /* Cor de fundo/separador */
+  border-radius: 8px;
+  overflow: hidden;
+}
+.episode-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #181818;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.episode-item:hover {
+  background-color: #282828;
+}
+.episode-item .thumbnail {
+  width: 160px;
+  flex-shrink: 0;
+  aspect-ratio: 16/9;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.episode-item .details {
+  display: flex;
+  flex-direction: column;
+}
+.episode-item .title {
+  font-weight: 600;
+  color: #FFFFFF;
+}
+.episode-item .description {
+  font-size: 0.875rem;
+  color: #A3A3A3;
+  margin-top: 0.25rem;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

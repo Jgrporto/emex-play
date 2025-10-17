@@ -13,12 +13,21 @@ export type Episode = {
   youtubeVideoId: string;
 };
 
+export interface CategoryPageItem {
+  _id: string;
+  title: string;
+  slug: string;
+  posterUrl?: string; // URL da imagem de fundo para o card
+}
+
 // --- TIPO TRAINING ATUALIZADO ---
 export type Training = {
   _id: string;
   title: string;
-  slug?: string;
-  thumbnailUrl: string;
+  slug: { current: string }; // Já deve existir
+  thumbnailUrl?: string;     // Já deve existir
+  duration?: string;         // <-- ADICIONE ESTA LINHA
+  level?: string;            // <-- ADICIONE ESTA LINHA
   description?: string;
   fullTitle?: string;
   category?: Category;
@@ -40,6 +49,7 @@ export type Category = {
   slug: { current: string };
   name: string;
   trainings: Training[];
+  description?: string;
 };
 
 export type PageData = {

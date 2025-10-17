@@ -19,5 +19,10 @@ export default {
         maxLength: 96,
       },
     },
+    {
+      name: 'description',
+      title: 'Descrição',
+      type: 'text', // 'text' permite parágrafos
+    },
   ],
 }
