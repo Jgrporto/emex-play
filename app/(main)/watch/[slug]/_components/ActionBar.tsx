@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight, Check, Loader2, Heart, ThumbsUp, ThumbsDown 
 
 interface ActionBarProps {
   episode: Episode;
-  seriesSlug: string;
+  seriesSlug: { current: string };
   prevEpisode?: Episode;
   nextEpisode?: Episode;
   isFavorited: boolean;
