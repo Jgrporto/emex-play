@@ -6,6 +6,15 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TrainingGridCard from '@/components/TrainingGridCard';
 
+
+
+// --- MUDANÇA 1: Criada uma interface para as props da página ---
+interface Props {
+  params: {
+    slug: string;
+  };
+}
+
 async function getData(slug: string) {
   // A query já está correta, buscando title, description e os treinamentos
   const query = `*[_type == "category" && slug.current == $slug][0]{
@@ -19,7 +28,7 @@ async function getData(slug: string) {
   return data;
 }
 
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
+export default async function CategoryPage({ params }: Props) {
   const category: (Category & { trainings: Training[] }) | null = await getData(params.slug);
 
   if (!category) {
