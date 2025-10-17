@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation'; // 1. Importe o useRouter
 
 type DislikeModalProps = {
   onClose: () => void;
-  trainingSlug: string; // 2. Adicione uma prop para receber o slug do treinamento
+  // --- CORREÇÃO 1: A prop 'trainingSlug' agora é tipada para ser um objeto ---
+  trainingSlug: { current: string };
 };
-
 export default function DislikeModal({ onClose, trainingSlug }: DislikeModalProps) {
   const router = useRouter(); // 3. Inicialize o router
 
   const handleNavigateToFeedback = () => {
     // 4. Navega para a página de avaliação, passando o slug
-    router.push(`/feedback/${trainingSlug}`); 
+    router.push(`/feedback/${trainingSlug.current}`);
   };
 
   return (
