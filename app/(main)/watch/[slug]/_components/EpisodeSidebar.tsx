@@ -11,7 +11,8 @@ interface EpisodeSidebarProps {
   seriesTitle: string;
   episodes: Episode[];
   currentEpisodeId: string;
-  seriesSlug: string;
+  // --- CORREÇÃO 1: A prop 'seriesSlug' agora é tipada para ser um objeto ---
+  seriesSlug: { current: string };
 }
 
 export function EpisodeSidebar({ seriesTitle, episodes, currentEpisodeId, seriesSlug }: EpisodeSidebarProps) {
