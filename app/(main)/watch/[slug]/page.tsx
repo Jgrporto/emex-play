@@ -7,6 +7,7 @@ import Link from 'next/link';
 import type { Training, Episode } from '@/types';
 import { client } from '@/lib/sanityClient';
 import { useParams, useSearchParams } from 'next/navigation';
+import Loading from '@/components/Loading';
 
 // Componentes
 import { VideoPlayer } from './_components/VideoPlayer';
@@ -58,7 +59,7 @@ export default function WatchPage() {
   const handleOpenDeslikeModal = () => { setHasLiked(p => p === false ? null : false); setDeslikeModalOpen(true); };
 
   if (isLoadingData) {
-    return <div className="flex justify-center items-center h-screen text-white">Carregando treinamento...</div>;
+    return <Loading />;
   }
 
   if (!series || episodes.length === 0) {
