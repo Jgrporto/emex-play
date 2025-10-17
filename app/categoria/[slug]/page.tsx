@@ -6,7 +6,12 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TrainingGridCard from '@/components/TrainingGridCard';
 
-// A interface 'Props' foi REMOVIDA para corrigir o erro de build da Vercel.
+// --- CORREÇÃO 1: Criado um 'type' dedicado para as props da página ---
+type CategoryPageProps = {
+  params: {
+    slug: string;
+  };
+};
 
 async function getData(slug: string) {
   const query = `*[_type == "category" && slug.current == $slug][0]{
@@ -20,9 +25,8 @@ async function getData(slug: string) {
   return data;
 }
 
-// --- MUDANÇA 1: A assinatura da função foi corrigida para a definição inline ---
-// Isso resolve o erro de tipo no build da Vercel.
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
+// --- CORREÇÃO 2: A função agora usa o novo tipo 'CategoryPageProps' ---
+export default async function CategoryPage({ params }: CategoryPageProps) {
   const category: (Category & { trainings: Training[] }) | null = await getData(params.slug);
 
   if (!category) {
