@@ -14,7 +14,7 @@ interface TrainingModalProps {
 
 // Pequeno componente para a linha do episódio
 function EpisodeRow({ episode }: { episode: Episode }) {
-  if (!episode.thumbnail?.asset?.url) return null; // Segurança
+  if (!episode.thumbnail?.asset?.url) return null;
 
   return (
     <div className="episode-item">
@@ -30,17 +30,18 @@ function EpisodeRow({ episode }: { episode: Episode }) {
 }
 
 export default function TrainingModal({ training, onClose }: TrainingModalProps) {
-  // Verificação de segurança
   if (!training) return null;
+
+  // Verificação de segurança para o slug
+  const hasSlug = training.slug && typeof training.slug === 'string';
 
   return (
     <div className="training-modal-overlay" onClick={onClose}>
       <div className="training-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="action-button modal-close-button" onClick={onClose}>
+        <button className="modal-close-button" onClick={onClose}>
           <X size={20} />
         </button>
 
-        {/* --- SEÇÃO DO BANNER --- */}
         <div className="modal-banner">
           {training.thumbnailUrl && (
             <Image
@@ -55,10 +56,16 @@ export default function TrainingModal({ training, onClose }: TrainingModalProps)
           <div className="modal-banner-content">
             <h1 className="modal-title">{training.title}</h1>
             <div className="modal-actions">
-              <Link href={`/watch/${training.slug.current}`} className="modal-play-button">
-                <Play size={20} fill="currentColor" />
-                <span>Iniciar</span>
-              </Link>
+              
+              {/* --- CORREÇÃO PRINCIPAL AQUI --- */}
+              {/* O link agora usa 'training.slug' diretamente, que já é a string correta. */}
+              {hasSlug && (
+                <Link href={`/watch/${training.slug}`} className="modal-play-button">
+                  <Play size={20} fill="currentColor" />
+                  <span>Iniciar</span>
+                </Link>
+              )}
+
               <button className="action-button btn-favorite"><Plus size={20} /></button>
               <button className="action-button btn-like"><ThumbsUp size={20} /></button>
               <button className="action-button btn-dislike"><ThumbsDown size={20} /></button>
@@ -67,7 +74,6 @@ export default function TrainingModal({ training, onClose }: TrainingModalProps)
           </div>
         </div>
 
-        {/* --- SEÇÃO DA LISTA DE EPISÓDIOS --- */}
         {training.episodes && training.episodes.length > 0 && (
           <div className="modal-content-body">
             <h2 className="episodes-title">Episódios ({training.episodes.length})</h2>
