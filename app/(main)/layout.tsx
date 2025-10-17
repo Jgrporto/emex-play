@@ -5,26 +5,35 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { usePathname } from 'next/navigation';
+import { MenuSidebarProvider } from "@/context/MenuSidebarContext";
+import MenuSidebar from "@/components/MenuSidebar";
 
 export default function MainLayout({ children }: { children: React.ReactNode; }) {
   const pathname = usePathname();
 
-  // A regra para a Navbar ser fixa continua a mesma: em todas as páginas, exceto na de vídeo.
+  // A regra para a Navbar ser fixa: em todas as páginas, exceto na de vídeo.
   const isNavbarFixed = !pathname.startsWith('/watch/');
 
-  // NOVA REGRA PARA O PADDING:
-  // O padding só é necessário se a Navbar for fixa E a página NÃO for a inicial.
 
   return (
-    <div className="flex flex-col min-h-screen bg-emex-preto">
-      <Navbar isFixed={isNavbarFixed} />
-      
-      {/* O padding 'pt-24' agora respeita a nova regra, deixando a home page sem padding */}
-      <main className={`flex-grow: ''}`}>
-        {children}
-      </main>
-      
-      <Footer />
-    </div>
+    // --- CORREÇÃO 1: Envolvemos todo o conteúdo com o Provider ---
+    // Isso resolve o erro "useMenuSidebar must be used within a MenuSidebarProvider".
+    <MenuSidebarProvider>
+      <div className="flex flex-col min-h-screen bg-emex-preto">
+        <Navbar isFixed={isNavbarFixed} />
+        
+        {/* --- CORREÇÃO 2: A classe do <main> foi corrigida --- */}
+        {/* A lógica de padding agora será aplicada corretamente. */}
+        <main className={`flex-grow}`}>
+          {children}
+        </main>
+        
+        <Footer />
+      </div>
+
+      {/* --- CORREÇÃO 3: O componente da sidebar é renderizado aqui --- */}
+      {/* Ele fica "escondido" e só aparece quando o contexto o ativa. */}
+      <MenuSidebar />
+    </MenuSidebarProvider>
   );
 }

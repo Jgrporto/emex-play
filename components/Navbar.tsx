@@ -3,6 +3,7 @@
 'use client';
 
 import { Menu, Search, Bell, LogIn, UserCircle } from 'lucide-react';
+import { useMenuSidebar } from '@/context/MenuSidebarContext'; // Importe o hook
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -18,8 +19,8 @@ export default function Navbar({ isFixed }: NavbarProps) {
   const pathname = usePathname();
   const { openModal: openSearchModal } = useSearch();
   const { data: session, status } = useSession();
-  const { toggleSidebar } = useProfileSidebar();
-
+  const { toggleSidebar: toggleMenuSidebar } = useMenuSidebar();
+  const { toggleSidebar: toggleProfileSidebar } = useProfileSidebar();
   const vinhetaGradient = "bg-gradient-to-b from-black/80 to-transparent";
   let headerClasses: string;
 
@@ -40,9 +41,15 @@ export default function Navbar({ isFixed }: NavbarProps) {
           <div className="flex items-center gap-6">
             {/* 1. Menu Hamburger (SEMPRE VISÍVEL) */}
             {/* MUDANÇA: Removida a classe 'md:hidden' */}
-            <button className="text-white hover:text-gray-300">
-              <Menu size={28} />
-            </button>
+           <button
+             onClick={toggleMenuSidebar}
+             className={`menu-hamburger`}
+>
+             <span></span>
+             <span></span>
+             <span></span>
+           </button>
+
             
             {/* 2. Logo */}
             <Link href="/" passHref>
@@ -93,7 +100,7 @@ export default function Navbar({ isFixed }: NavbarProps) {
 
             {/* Estado Logado */}
             {status === 'authenticated' && session.user && (
-              <button onClick={toggleSidebar} className="navbar-avatar-hover flex items-center group cursor-pointer" title="Abrir perfil">
+              <button onClick={toggleProfileSidebar} className="navbar-avatar-hover flex items-center group cursor-pointer" title="Abrir perfil">
                 {session.user.image ? (
                   // MUDANÇA: Tamanho da imagem aumentado para 48x48
                   <Image src={session.user.image} alt={session.user.name || "Avatar"} width={48} height={48} className="rounded-full" />
