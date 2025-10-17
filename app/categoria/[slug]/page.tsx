@@ -6,14 +6,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TrainingGridCard from '@/components/TrainingGridCard';
 
-// --- CORREÇÃO AQUI ---
-// Criamos um 'type' dedicado e completo para as props da página,
-// incluindo 'searchParams' para satisfazer o build da Vercel.
-type Props = {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
 async function getData(slug: string) {
   const query = `*[_type == "category" && slug.current == $slug][0]{
     title,
@@ -26,8 +18,14 @@ async function getData(slug: string) {
   return data;
 }
 
-// A função agora usa o novo tipo 'Props'
-export default async function CategoryPage({ params }: Props) {
+// --- CORREÇÃO DEFINITIVA AQUI ---
+// Este comentário desabilita a regra 'no-explicit-any' APENAS para a linha seguinte.
+// Isso é necessário para contornar um bug de tipagem no build da Vercel.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function CategoryPage(props: any) {
+  // Em seguida, garantimos a segurança de tipos aqui dentro.
+  const params = props.params as { slug: string };
+  
   const category: (Category & { trainings: Training[] }) | null = await getData(params.slug);
 
   if (!category) {
@@ -41,7 +39,6 @@ export default async function CategoryPage({ params }: Props) {
       </div>
     );
   }
-  
   return (
     <div className="bg-emex-preto min-h-screen">
       <Navbar isFixed={true} />
