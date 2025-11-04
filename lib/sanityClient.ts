@@ -1,7 +1,6 @@
 // lib/sanityClient.ts
 import { createClient } from 'next-sanity'
 
-
 // Buscamos o projectId da variável de ambiente
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 
@@ -15,6 +14,11 @@ export const client = createClient({
   dataset: 'production',
   apiVersion: '2024-10-21', // Use uma data recente
   
-  useCdn: false,
+  // Garantia de que estamos usando a configuração correta para escrita:
+  useCdn: false, 
+  
+  // --- CORREÇÃO PRINCIPAL AQUI ---
+  // Alterado de NEXT_PUBLIC_SANITY_TOKEN para SANITY_API_TOKEN
+  // para usar o token secreto com permissão de "Editor".
   token: process.env.SANITY_API_TOKEN,
 })

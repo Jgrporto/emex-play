@@ -1,47 +1,51 @@
 // app/api/users/create/route.ts
 
 import { NextResponse } from 'next/server';
-import { client } from '@/lib/sanityClient';
+import { client } from '@/lib/sanityClient'; // Seu cliente Sanity
 import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
   try {
-    // --- Passo 1: Receber e validar os dados do formulário ---
-    const body = await request.json();
-    const { name, email, password } = body;
+    // 1. Recebe TODOS os campos do frontend
+    const { name, username, email, password } = await request.json();
 
-    if (!name || !email || !password) {
-      return new NextResponse('Campos obrigatórios faltando', { status: 400 });
+    if (!username || !password || !name) {
+      return NextResponse.json({ message: 'Nome, username e senha são obrigatórios.' }, { status: 400 });
     }
 
-    // --- Passo 2: Verificar se o usuário já existe ---
-    const userExistsQuery = `*[_type == "user" && email == $email][0]`;
-    const existingUser = await client.fetch(userExistsQuery, { email });
+    // 2. Verifica se o username ou email (se fornecido) já existem
+    const existingUserQuery = `*[_type == "user" && (username == $username || (email != null && email == $email))][0]`;
+    const existingUser = await client.fetch(existingUserQuery, { username, email });
 
     if (existingUser) {
-      return new NextResponse('Um usuário com este email já existe', { status: 409 }); // 409 Conflict
+      if (existingUser.username === username) {
+        return NextResponse.json({ message: 'Este nome de usuário já está em uso.' }, { status: 409 }); // 409 Conflict
+      }
+      if (existingUser.email === email) {
+        return NextResponse.json({ message: 'Este e-mail já está em uso.' }, { status: 409 });
+      }
     }
 
-    // --- Passo 3: Criptografar a senha ---
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // 3. CRIA O HASH DA SENHA
+    const hashedPassword = await bcrypt.hash(password, 12); // 12 é o custo (salt)
 
-    // --- Passo 4: Criar o novo usuário no Sanity ---
-    const newUser = {
+    // 4. Cria o documento do usuário
+    const newUserDocument = {
       _type: 'user',
-      name,
-      email,
-      password: hashedPassword,
-      // O campo de imagem será adicionado separadamente pelo admin no Sanity Studio
+      name: name,
+      username: username,
+      email: email || null, // Salva null se o email for vazio
+      password: hashedPassword, // Salva a senha hasheada
     };
 
-    const createdUser = await client.create(newUser);
+    // 5. Salva o novo usuário no Sanity
+    const createdUser = await client.create(newUserDocument);
 
-    // --- Passo 5: Retornar uma resposta de sucesso ---
-    return NextResponse.json(createdUser, { status: 201 }); // 201 Created
+    return NextResponse.json({ message: 'Usuário criado com sucesso!', user: createdUser }, { status: 201 });
 
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
-    return new NextResponse('Erro interno do servidor', { status: 500 });
+    // 6. GARANTE que erros também retornem JSON
+    return NextResponse.json({ message: 'Erro interno do servidor. Verifique o console.' }, { status: 500 });
   }
 }

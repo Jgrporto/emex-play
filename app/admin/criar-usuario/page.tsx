@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export default function CreateUserPage() {
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
@@ -23,23 +24,26 @@ export default function CreateUserPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        // 1. Envia 'username' no corpo da requisição
+        body: JSON.stringify({ name, username, email, password }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'Algo deu errado');
-      }
-
+      // 2. Lê a resposta como JSON
       const data = await response.json();
+
+      // 3. Trata o erro se a API retornar um status de falha (ex: 400, 409, 500)
+      if (!response.ok) {
+        throw new Error(data.message || 'Algo deu errado');
+      }
       
-      setMessage({ type: 'success', text: `Usuário "${data.name}" criado com sucesso!` });
+      setMessage({ type: 'success', text: `Usuário "${data.user.name}" (Username: ${data.user.username}) criado com sucesso!` });
       setName("");
+      setUsername("");
       setEmail("");
       setPassword("");
 
-    } catch (error) { // <-- MUDANÇA AQUI: Removemos o ': any'
-      // Verificamos se o 'error' é um objeto de Erro padrão do JavaScript
+    } catch (error) {
+      // 4. O 'catch' agora sempre receberá uma mensagem de erro clara
       if (error instanceof Error) {
         setMessage({ type: 'error', text: error.message });
       } else {
@@ -57,42 +61,56 @@ export default function CreateUserPage() {
         <h2 className="text-xl font-semibold mb-8">Criar Novo Usuário</h2>
         <div className="bg-emex-cinza-escuro p-8 rounded-lg shadow-lg">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* O resto do seu formulário continua igual... */}
-             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-300">Nome</label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-emex-azul-claro focus:border-emex-azul-claro"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">Email</label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-emex-azul-claro focus:border-emex-azul-claro"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">Senha</label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-emex-azul-claro focus:border-emex-azul-claro"
-              />
-            </div>
-            <div>
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300">Nome (Obrigatório)</label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-emex-azul-claro focus:border-emex-azul-claro"
+                />
+              </div>
+              
+              {/* Campo de Username (obrigatório) */}
+              <div>
+                <label htmlFor="username" className="block text-sm font-medium text-gray-300">Nome de Usuário (Obrigatório, para login)</label>
+                <input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-emex-azul-claro focus:border-emex-azul-claro"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300">Email (Opcional)</label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  // 'required' removido
+                  className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-emex-azul-claro focus:border-emex-azul-claro"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-300"> Senha (Obrigatório)</label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-emex-azul-claro focus:border-emex-azul-claro"
+                />
+              </div>
+              
               <button
                 type="submit"
                 disabled={isLoading}
@@ -100,7 +118,6 @@ export default function CreateUserPage() {
               >
                 {isLoading ? 'Criando...' : 'Criar Usuário'}
               </button>
-            </div>
           </form>
 
           {message && (
