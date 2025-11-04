@@ -98,15 +98,15 @@ export default function WatchPage() {
             <div className="px-4 sm:px-6 lg:px-8 py-1 w-full lg:w-2/3">
               <VideoPlayer episode={episodeToPlay} />
               <ActionBar
-                episode={episodeToPlay}
-                seriesSlug={series.slug!}
-                prevEpisode={prevEpisode}
-                nextEpisode={nextEpisode}
-                isFavorited={isFavorited}
-                hasLiked={hasLiked}
-                onFavorite={() => setIsFavorited(p => !p)}
-                onOpenLikeModal={handleOpenLikeModal}
-                onOpenDeslikeModal={handleOpenDeslikeModal}
+  seriesSlug={series.slug!}
+  prevEpisode={prevEpisode}
+  nextEpisode={nextEpisode}
+  
+  // --- ATUALIZE ESTAS LINHAS ---
+  trainingId={series._id} // <-- ADICIONE ESTA LINHA
+  hasLiked={hasLiked}
+  onOpenLikeModal={handleOpenLikeModal}
+  onOpenDeslikeModal={handleOpenDeslikeModal}
               />
               <h1 className="text-3xl font-bold mb-2">{episodeToPlay.title}</h1>
               <p className="text-gray-400">{episodeToPlay.description}</p>

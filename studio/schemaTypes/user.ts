@@ -41,5 +41,16 @@ export default {
         hotspot: true,
       },
     },
+    {
+      name: 'favorites',
+      title: 'Favoritos',
+      type: 'array', // Será um array
+      of: [
+        {
+          type: 'reference', // De referências
+          to: [{ type: 'training' }] // Para documentos do tipo 'training'
+        }
+      ]
+    }
   ],
 }

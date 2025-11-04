@@ -5,27 +5,29 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { usePathname } from 'next/navigation';
+import { FavoritesProvider } from '@/context/FavoritesContext'; // 1. Importe o FavoritesProvider
 
 export default function MainLayout({ children }: { children: React.ReactNode; }) {
   const pathname = usePathname();
 
-  // A regra para a Navbar ser fixa: em todas as páginas, exceto na de vídeo.
   const isNavbarFixed = !pathname.startsWith('/watch/');
-
+  // Lógica de padding restaurada
+  const needsTopPadding = isNavbarFixed && pathname !== '/';
 
   return (
-    // --- CORREÇÃO 1: Envolvemos todo o conteúdo com o Provider ---
-    // Isso resolve o erro "useMenuSidebar must be used within a MenuSidebarProvider".
+    // 2. Envolva o layout com o FavoritesProvider
+    // Ele funcionará pois o SessionProvider está no layout raiz (Passo 1)
+    <FavoritesProvider>
       <div className="flex flex-col min-h-screen bg-emex-preto">
         <Navbar isFixed={isNavbarFixed} />
         
-        {/* --- CORREÇÃO 2: A classe do <main> foi corrigida --- */}
-        {/* A lógica de padding agora será aplicada corretamente. */}
-        <main className={`flex-grow}`}>
+        {/* 3. Classe do <main> corrigida com a lógica de padding */}
+        <main className={`flex-grow ${needsTopPadding ? 'pt-24' : ''}`}>
           {children}
         </main>
         
         <Footer />
       </div>
+    </FavoritesProvider>
   );
 }

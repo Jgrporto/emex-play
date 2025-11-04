@@ -8,6 +8,7 @@ import SearchModal from '@/components/SearchModal';
 import AuthProvider from '@/components/AuthProvider';
 import { ProfileSidebarProvider } from '@/context/ProfileSidebarContext'; // Importe o provedor
 import ProfileSidebar from '@/components/ProfileSidebar'; // Importe a barra lateral
+import ProviderWrapper from './ProviderWrapper'; // 1. Importe o Wrapper
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,7 +26,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* Envolvemos com o novo provedor */}
             <ProfileSidebarProvider>
               <main>
+                <ProviderWrapper>
                 {children}
+                </ProviderWrapper>
               </main>
               <SearchModal />
               <ProfileSidebar /> {/* Renderizamos a barra lateral aqui */}
