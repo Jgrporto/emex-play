@@ -2,8 +2,7 @@
 
 'use client';
 
-import { Menu, Search, Bell, LogIn, UserCircle } from 'lucide-react';
-import { useMenuSidebar } from '@/context/MenuSidebarContext'; // Importe o hook
+import { Search, Bell, LogIn, UserCircle } from 'lucide-react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -19,7 +18,6 @@ export default function Navbar({ isFixed }: NavbarProps) {
   const pathname = usePathname();
   const { openModal: openSearchModal } = useSearch();
   const { data: session, status } = useSession();
-  const { toggleSidebar: toggleMenuSidebar } = useMenuSidebar();
   const { toggleSidebar: toggleProfileSidebar } = useProfileSidebar();
   const vinhetaGradient = "bg-gradient-to-b from-black/80 to-transparent";
   let headerClasses: string;
@@ -41,16 +39,6 @@ export default function Navbar({ isFixed }: NavbarProps) {
           <div className="flex items-center gap-6">
             {/* 1. Menu Hamburger (SEMPRE VISÍVEL) */}
             {/* MUDANÇA: Removida a classe 'md:hidden' */}
-           <button
-             onClick={toggleMenuSidebar}
-             className={`menu-hamburger`}
->
-             <span></span>
-             <span></span>
-             <span></span>
-           </button>
-
-            
             {/* 2. Logo */}
             <Link href="/" passHref>
               <Image src="/emex-logo.png" alt="EMEX Play Logo" width={150} height={50} priority className="cursor-pointer" />

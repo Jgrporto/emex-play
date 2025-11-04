@@ -5,8 +5,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { usePathname } from 'next/navigation';
-import { MenuSidebarProvider } from "@/context/MenuSidebarContext";
-import MenuSidebar from "@/components/MenuSidebar";
 
 export default function MainLayout({ children }: { children: React.ReactNode; }) {
   const pathname = usePathname();
@@ -18,7 +16,6 @@ export default function MainLayout({ children }: { children: React.ReactNode; })
   return (
     // --- CORREÇÃO 1: Envolvemos todo o conteúdo com o Provider ---
     // Isso resolve o erro "useMenuSidebar must be used within a MenuSidebarProvider".
-    <MenuSidebarProvider>
       <div className="flex flex-col min-h-screen bg-emex-preto">
         <Navbar isFixed={isNavbarFixed} />
         
@@ -30,10 +27,5 @@ export default function MainLayout({ children }: { children: React.ReactNode; })
         
         <Footer />
       </div>
-
-      {/* --- CORREÇÃO 3: O componente da sidebar é renderizado aqui --- */}
-      {/* Ele fica "escondido" e só aparece quando o contexto o ativa. */}
-      <MenuSidebar />
-    </MenuSidebarProvider>
   );
 }
