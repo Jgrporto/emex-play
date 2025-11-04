@@ -12,7 +12,6 @@ export default function MainLayout({ children }: { children: React.ReactNode; })
 
   const isNavbarFixed = !pathname.startsWith('/watch/');
   // Lógica de padding restaurada
-  const needsTopPadding = isNavbarFixed && pathname !== '/';
 
   return (
     // 2. Envolva o layout com o FavoritesProvider
@@ -22,7 +21,7 @@ export default function MainLayout({ children }: { children: React.ReactNode; })
         <Navbar isFixed={isNavbarFixed} />
         
         {/* 3. Classe do <main> corrigida com a lógica de padding */}
-        <main className={`flex-grow ${needsTopPadding ? 'pt-24' : ''}`}>
+        <main>
           {children}
         </main>
         
