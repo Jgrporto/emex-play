@@ -1,4 +1,6 @@
 // app/api/auth/[...nextauth]/route.ts
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 import NextAuth from "next-auth";
 import type { AuthOptions } from "next-auth";
@@ -22,37 +24,28 @@ const authOptions: AuthOptions = {
         const identificador = credentials.email;
         const senha = credentials.password;
 
-        try {
-          const userQuery = `*[_type == "user" && (email == $identificador || username == $identificador)][0]{
-            _id, name, email, username, "image": image.asset->url, password,
-            "favorites": favorites[]->_id
-          }`;
-          const sanityUser = await client.fetch(userQuery, { identificador });
+        const userQuery = `*[_type == "user" && (email == $identificador || username == $identificador)][0]{
+          _id, name, email, username, "image": image.asset->url, password,
+          "favorites": favorites[]->_id
+        }`;
 
-          if (!sanityUser || !sanityUser.password) {
-            console.error("Erro de Autenticação: Usuário não encontrado:", identificador);
-            return null;
-          }
+        const sanityUser = await client.fetch(userQuery, { identificador });
 
-          const senhasCoincidem = await bcrypt.compare(senha, sanityUser.password);
+        if (!sanityUser?.password) return null;
 
-          if (!senhasCoincidem) {
-            console.error("Erro de Autenticação: Senha incorreta para:", identificador);
-            return null;
-          }
+        const senhasCoincidem = await bcrypt.compare(senha, sanityUser.password);
 
-          console.log("Usuário Sanity autenticado:", identificador);
-          return {
-            id: sanityUser._id,
-            name: sanityUser.name || sanityUser.username,
-            email: sanityUser.email,
-            image: sanityUser.image,
-            favorites: sanityUser.favorites || [], // Passa os favoritos
-          };
-        } catch (error) {
-          console.error("Erro durante autorização:", error);
-          return null;
-        }
+        if (!senhasCoincidem) return null;
+
+        console.log("Usuário Sanity autenticado:", identificador);
+
+        return {
+          id: sanityUser._id,
+          name: sanityUser.name || sanityUser.username,
+          email: sanityUser.email,
+          image: sanityUser.image,
+          favorites: sanityUser.favorites || [],
+        };
       },
     }),
   ],
@@ -62,36 +55,36 @@ const authOptions: AuthOptions = {
 
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-  const agoraEmSegundos = Math.floor(Date.now() / 1000);
+      const agoraEmSegundos = Math.floor(Date.now() / 1000);
 
-  // login
-  if (user) {
-    token.id = user.id;
-    token.lastActivity = agoraEmSegundos;
-    token.favorites = user.favorites || [];
-  }
+      // login
+      if (user) {
+        token.id = user.id;
+        token.lastActivity = agoraEmSegundos;
+        token.favorites = user.favorites || [];
+      }
 
-  // quando update() é chamado no client
-  if (trigger === "update" && session?.favorites) {
-    token.favorites = session.favorites;
-  }
+      // update() do client → FAVORITOS atualiza token
+      if (trigger === "update" && session?.favorites) {
+        token.favorites = session.favorites;
+      }
 
-  return token;
-},
+      return token;
+    },
+
     async session({ session, token }) {
       if (token?.id) {
-        if (!session.user) session.user = {}; 
         session.user.id = token.id as string;
-        // --- CORREÇÃO AQUI: Removemos o '(as any)' ---
         session.user.favorites = token.favorites || [];
       }
       return session;
     },
   },
 
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };
+export { authOptions };
+
