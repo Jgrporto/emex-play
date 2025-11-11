@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse, NextRequest } from 'next/server';
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import { client } from '@/lib/sanityClient';
 
 export async function POST(request: NextRequest) {
