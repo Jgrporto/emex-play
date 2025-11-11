@@ -61,22 +61,23 @@ const authOptions: AuthOptions = {
   session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
 
   callbacks: {
-    async jwt({ token, user, trigger }) {
-      const agoraEmSegundos = Math.floor(Date.now() / 1000);
+    async jwt({ token, user, trigger, session }) {
+  const agoraEmSegundos = Math.floor(Date.now() / 1000);
 
-      if (user) {
-        token.id = user.id;
-        token.lastActivity = agoraEmSegundos;
-        // --- CORREÇÃO AQUI: Removemos o '(as any)' ---
-        token.favorites = user.favorites || [];
-      }
+  // login
+  if (user) {
+    token.id = user.id;
+    token.lastActivity = agoraEmSegundos;
+    token.favorites = user.favorites || [];
+  }
 
-      if (trigger === "update" || !trigger) {
-         token.lastActivity = agoraEmSegundos; 
-      }
+  // quando update() é chamado no client
+  if (trigger === "update" && session?.favorites) {
+    token.favorites = session.favorites;
+  }
 
-      return token;
-    },
+  return token;
+},
     async session({ session, token }) {
       if (token?.id) {
         if (!session.user) session.user = {}; 
